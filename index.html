@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Multi-LP</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♾️</text></svg>">
+    <style>
+        :root {
+            --bg-body: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-main: #1a202c;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border: #e2e8f0;
+            --input-bg: #ffffff;
+            --input-border: #e2e8f0;
+            --input-focus-ring: rgba(102, 126, 234, 0.1);
+            --accent-primary: #667eea;
+            --accent-secondary: #764ba2;
+            --switch-bg-off: #cbd5e0;
+            --switch-bg-on: #48bb78;
+            --btn-reset-bg: #cbd5e0;
+            --btn-reset-text: #4a5568;
+            --btn-reset-hover: #a0aec0;
+            --lp-selected-bg: #f0fff4;
+            --lp-selected-border: #48bb78;
+            --shadow-card: 0 10px 25px rgba(0,0,0,0.05);
+            --shadow-input: 0 0 0 3px var(--input-focus-ring);
+            --danger: #fc8181;
+            --danger-bg: #fff5f5;
+            --danger-border: #feb2b2;
+            --tag-bg: #ebf4ff;
+            --tag-text: #3182ce;
+            --tag-border: #90cdf4;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-secondary: #cbd5e0;
+            --text-muted: #64748b;
+            --border: #334155;
+            --input-bg: #0f172a;
+            --input-border: #334155;
+            --input-focus-ring: rgba(102, 126, 234, 0.2);
+            --switch-bg-off: #475569;
+            --btn-reset-bg: #334155;
+            --btn-reset-text: #94a3b8;
+            --btn-reset-hover: #475569;
+            --lp-selected-bg: rgba(72, 187, 120, 0.1);
+            --lp-selected-border: #48bb78;
+            --shadow-card: 0 10px 25px rgba(0,0,0,0.4);
+            --danger: #f56565;
+            --danger-bg: rgba(245, 101, 101, 0.1);
+            --danger-border: #fc8181;
+            --tag-bg: rgba(49, 130, 206, 0.15);
+            --tag-text: #63b3ed;
+            --tag-border: #2b6cb0;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; 
+            background: var(--bg-body); 
+            padding: 20px; 
+            display: flex; 
+            justify-content: center;
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        } 
+        
+        .card { 
+            background: var(--bg-card); 
+            padding: 30px; 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-card); 
+            width: 100%; 
+            max-width: 640px; 
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        } 
+        
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h2 { 
+            margin: 0;
+            color: var(--text-main); 
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 800; 
+            font-size: 1.75rem;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .theme-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .theme-toggle-btn:hover {
+            background: var(--input-bg);
+            color: var(--text-main);
+        }
+        .theme-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary); font-size: 14px; }
+        
+        input[type="text"], input[type="number"] { 
+            width: 100%; 
+            padding: 12px 15px; 
+            border: 2px solid var(--input-border); 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            background: var(--input-bg);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        } 
+        input:focus { 
+            border-color: var(--accent-primary); 
+            outline: none; 
+            box-shadow: var(--shadow-input);
+        }
+
+        .smartlink-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .smartlink-count-badge {
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            border: 1px solid var(--tag-border);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .btn-add-smartlink {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-add-smartlink:hover { opacity: 0.85; transform: translateY(-1px); }
+
+        .smartlink-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .smartlink-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            animation: slideIn 0.25s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .smartlink-row input { flex: 1; }
+
+        .smartlink-row .row-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .btn-remove-smartlink {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--danger-border);
+            background: var(--danger-bg);
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .btn-remove-smartlink:hover {
+            background: var(--danger);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .lp-control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            padding: 4px 10px;
+            background: var(--input-bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .lp-status-text {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 32px;
+            height: 16px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--switch-bg-off);
+            transition: .4s;
+            border-radius: 16px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 12px;
+            width: 12px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--switch-bg-on); }
+        input:checked + .slider:before { transform: translateX(16px); }
+
+        .lp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+
+        .lp-item {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 40px;
+        }
+
+        .lp-item:hover { border-color: var(--text-muted); }
+        .lp-item.selected {
+            border-color: var(--lp-selected-border);
+            background-color: var(--lp-selected-bg);
+        }
+
+        .lp-name { font-weight: bold; font-size: 0.75rem; color: var(--text-main); flex-grow: 1; text-align:center;}
+        .lp-checkbox {
+            width: 14px; height: 14px;
+            accent-color: var(--switch-bg-on);
+            cursor: pointer;
+        }
+
+        .lp-container-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(1);
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        button { 
+            padding: 14px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: transform 0.1s, opacity 0.2s;
+        } 
+        button:active { transform: scale(0.98); }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+        }
+        .btn-generate:hover { opacity: 0.9; }
+
+        .btn-reset {
+            background: var(--btn-reset-bg);
+            color: var(--btn-reset-text);
+        }
+        .btn-reset:hover { background: var(--btn-reset-hover); }
+
+        .output-box { 
+            margin-top: 30px; 
+            border-top: 2px dashed var(--border); 
+            padding-top: 20px; 
+            display: none; 
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .output-title { font-weight: bold; color: var(--text-main); font-size: 14px; }
+
+        .output-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .btn-copy-all {
+            background: var(--switch-bg-on);
+            color: white;
+            padding: 8px 15px;
+            font-size: 13px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(72, 187, 120, 0.3);
+        }
+        .btn-copy-all:hover { background: #38a169; }
+
+        .list-container {
+            max-height: 400px;
+            overflow-y: auto;
+            background: var(--input-bg);
+            border-radius: 8px;
+            padding: 5px;
+            border: 1px solid var(--border);
+        }
+
+        .list-container::-webkit-scrollbar { width: 6px; }
+        .list-container::-webkit-scrollbar-track { background: transparent; }
+        .list-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .list-container::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        .smartlink-group-label {
+            background: var(--accent-primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            margin: 10px 0 6px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .smartlink-group-label:first-child { margin-top: 0; }
+
+        .item { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border); 
+            padding: 10px 12px; 
+            margin-bottom: 6px; 
+            border-radius: 6px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-family: 'Courier New', monospace; 
+            font-size: 12px; 
+            color: var(--text-main);
+            transition: all 0.15s;
+        }
+        .item:hover { transform: translateX(2px); border-color: var(--text-muted); }
+        
+        .copy-btn { 
+            background: var(--input-bg); 
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 11px;
+            font-weight: 600;
+            flex-shrink: 0;
+        } 
+        .copy-btn:hover { background: var(--border); color: var(--text-main); }
+
+        .lp-custom-input {
+            display: none; 
+            margin-top: 5px;
+            padding: 5px;
+            background: rgba(251, 211, 141, 0.1);
+            border: 1px solid #fbd38d;
+            border-radius: 6px;
+        }
+        [data-theme="dark"] .lp-custom-input {
+            background: rgba(251, 211, 141, 0.05);
+        }
+
+        .summary-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .summary-chip {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+        }
+        .summary-chip strong { color: var(--text-main); }
+
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        #toast.show { opacity: 1; bottom: 50px; }
+
+        @media (max-width: 500px) {
+            .card { padding: 20px; }
+            h2 { font-size: 1.4rem; }
+            .smartlink-row .row-number { width: 24px; height: 24px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header-row">
+        <h2>⚡multi link</h2>
+        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()" title="Ganti Tema">
+            <svg id="iconSun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <svg id="iconMoon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="display: none;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Smartlink List (Multiple) -->
+    <div class="form-group">
+        <div class="smartlink-list-header">
+            <label style="margin-bottom:0;">Smartlink</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <span class="smartlink-count-badge" id="smartlinkBadge">1 link</span>
+                <button class="btn-add-smartlink" onclick="addSmartlinkRow()">+ Tambah</button>
+            </div>
+        </div>
+        <div class="smartlink-list" id="smartlinkList">
+            <div class="smartlink-row" data-index="1">
+                <div class="row-number">1</div>
+                <input type="text" class="smartlink-input" placeholder="https://smartlink.com/?ref=user" value="">
+                <button class="btn-remove-smartlink" onclick="removeSmartlinkRow(this)" title="Hapus">×</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel LP Section -->
+    <div class="form-group" style="border: 1px solid var(--border); border-radius: 8px; padding: 8px;">
+        <div class="lp-control-header">
+            <div id="lpStatusText" class="lp-status-text">Off (Direct)</div>
+            <label class="switch">
+                <input type="checkbox" id="masterSwitch" onchange="toggleMasterSwitch()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div id="lpContainer" class="lp-container-disabled">
+            <div class="lp-grid">
+                <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp1/">
+                    <div class="lp-name">LP 1</div>
+                    <input type="checkbox" class="lp-checkbox">
+                </div>
+                <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp2/">
+                    <div class="lp-name">LP 2</div>
+                    <input type="checkbox" class="lp-checkbox">
+                </div>
+                <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp3/">
+                    <div class="lp-name">LP 3</div>
+                    <input type="checkbox" class="lp-checkbox">
+                </div>
+            </div>
+
+            <div class="lp-custom-input">
+                <label style="font-size:10px; margin-bottom:3px;">URL LP Custom:</label>
+                <input type="text" id="lpCustomInput" placeholder="https://..." style="padding:5px; border:1px solid #e2e8f0; font-size:11px;">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Total Jumlah Link</label>
+        <input type="number" id="count" value="10" min="1">
+        <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">Akan dibagi acak ke semua smartlink yang diisi</div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn-generate" onclick="generate()">🚀 Generate Link</button>
+        <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
+    </div>
+
+    <!-- Output Section -->
+    <div id="outputBox" class="output-box">
+        <div class="output-header">
+            <div>
+                <span class="output-title">Hasil Generate</span>
+                <div class="output-subtitle" id="outputSubtitle"></div>
+            </div>
+            <button class="btn-copy-all" onclick="copyAll()">📋 Salin Semua</button>
+        </div>
+
+        <div class="summary-bar" id="summaryBar"></div>
+
+        <div class="list-container" id="outputList"></div>
+    </div>
+</div>
+
+<div id="toast">Berhasil disalin!</div>
+
+<script>
+    let smartlinkCounter = 1;
+
+    /* --- TEMA --- */
+    function initTheme() {
+        const saved = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(saved === 'dark' || (!saved && prefersDark) ? 'dark' : 'light');
+    }
+
+    function toggleTheme() {
+        const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        localStorage.setItem('theme', next);
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        document.getElementById('iconSun').style.display = theme === 'dark' ? 'none' : 'block';
+        document.getElementById('iconMoon').style.display = theme === 'dark' ? 'block' : 'none';
+    }
+
+    /* --- SMARTLINK ROW --- */
+    function updateSmartlinkBadge() {
+        const count = document.querySelectorAll('.smartlink-row').length;
+        document.getElementById('smartlinkBadge').textContent = count + (count === 1 ? ' link' : ' link');
+    }
+
+    function addSmartlinkRow() {
+        smartlinkCounter++;
+        const list = document.getElementById('smartlinkList');
+        const row = document.createElement('div');
+        row.className = 'smartlink-row';
+        row.dataset.index = smartlinkCounter;
+        row.innerHTML = `
+            <div class="row-number">${smartlinkCounter}</div>
+            <input type="text" class="smartlink-input" placeholder="https://smartlink.com/?ref=user" value="">
+            <button class="btn-remove-smartlink" onclick="removeSmartlinkRow(this)" title="Hapus">×</button>
+        `;
+        list.appendChild(row);
+        updateSmartlinkBadge();
+        row.querySelector('input').focus();
+    }
+
+    function removeSmartlinkRow(btn) {
+        const rows = document.querySelectorAll('.smartlink-row');
+        if (rows.length <= 1) {
+            showToast('Minimal harus ada 1 smartlink!');
+            return;
+        }
+        const row = btn.closest('.smartlink-row');
+        row.style.transition = 'opacity 0.2s, transform 0.2s';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(20px)';
+        setTimeout(() => {
+            row.remove();
+            renumberRows();
+            updateSmartlinkBadge();
+        }, 200);
+    }
+
+    function renumberRows() {
+        document.querySelectorAll('.smartlink-row').forEach((row, i) => {
+            row.querySelector('.row-number').textContent = i + 1;
+        });
+    }
+
+    function getSmartlinks() {
+        const links = [];
+        document.querySelectorAll('.smartlink-input').forEach(input => {
+            const val = input.value.trim();
+            if (val) links.push(val);
+        });
+        return links;
+    }
+
+    /* --- LP LOGIC --- */
+    function toggleMasterSwitch() {
+        const isOn = document.getElementById('masterSwitch').checked;
+        const container = document.getElementById('lpContainer');
+        const statusText = document.getElementById('lpStatusText');
+
+        if (isOn) {
+            container.classList.remove('lp-container-disabled');
+            statusText.innerText = "On (aktif)";
+            statusText.style.color = "#48bb78";
+        } else {
+            container.classList.add('lp-container-disabled');
+            statusText.innerText = "Off (Direct)";
+            statusText.style.color = "#718096";
+        }
+    }
+
+    function toggleLPSelection(element) {
+        if (!document.getElementById('masterSwitch').checked) return;
+        element.classList.toggle('selected');
+        const checkbox = element.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+    }
+
+    function getSelectedLPs() {
+        if (!document.getElementById('masterSwitch').checked) return [];
+        const customUrl = document.getElementById('lpCustomInput').value.trim();
+        if (customUrl) return [customUrl];
+        const urls = [];
+        document.querySelectorAll('.lp-checkbox:checked').forEach(box => {
+            urls.push(box.parentElement.getAttribute('data-url'));
+        });
+        return urls;
+    }
+
+    /* --- RANDOM DISTRIBUSI LINK --- */
+    // Fungsi untuk membagi N link ke M smartlink secara acak
+    function distributeRandom(total, numSlots) {
+        if (numSlots === 0) return [];
+        if (numSlots === 1) return [total];
+
+        const dist = new Array(numSlots).fill(0);
+        let remaining = total;
+
+        // Step 1: Beri 1 link ke setiap smartlink dulu agar semua dapat jatah
+        for (let i = 0; i < numSlots; i++) {
+            dist[i] = 1;
+            remaining--;
+        }
+
+        // Step 2: Sisa link dibagi acak satu per satu
+        for (let i = 0; i < remaining; i++) {
+            const randomIndex = Math.floor(Math.random() * numSlots);
+            dist[randomIndex]++;
+        }
+
+        // Step 3: Shuffle agar urutan hasilnya random (bukan selalu smartlink awal yang paling banyak)
+        for (let i = dist.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [dist[i], dist[j]] = [dist[j], dist[i]];
+        }
+
+        return dist;
+    }
+
+    /* --- GENERATE --- */
+    function makeId(length) {
+        let result = '';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+    }
+
+    function generate() {
+        const smartlinks = getSmartlinks();
+        const lps = getSelectedLPs();
+        const totalRequested = parseInt(document.getElementById('count').value);
+        const useLP = lps.length > 0;
+
+        const outputDiv = document.getElementById('outputList');
+        const outputBox = document.getElementById('outputBox');
+        const summaryBar = document.getElementById('summaryBar');
+        const subtitle = document.getElementById('outputSubtitle');
+
+        outputDiv.innerHTML = '';
+        summaryBar.innerHTML = '';
+
+        if (smartlinks.length === 0) {
+            showToast('Isi minimal 1 smartlink!');
+            return;
+        }
+        if (useLP && lps.length === 0) {
+            showToast('Pilih minimal satu LP atau isi LP custom!');
+            return;
+        }
+        if (isNaN(totalRequested) || totalRequested < 1) {
+            showToast('Jumlah link tidak valid!');
+            return;
+        }
+
+        // Cegah jumlah link lebih kecil dari jumlah smartlink
+        let totalToGenerate = totalRequested;
+        if (totalToGenerate < smartlinks.length) {
+            totalToGenerate = smartlinks.length;
+            showToast(`Minimal ${smartlinks.length} link agar semua smartlink dapat jatah!`);
+        }
+
+        // Hitung distribusi acak
+        const distribution = distributeRandom(totalToGenerate, smartlinks.length);
+
+        let totalLinks = 0;
+        const smartlinkCounts = [];
+
+        smartlinks.forEach((smartlink, slIndex) => {
+            const linkCount = distribution[slIndex];
+
+            // Group label
+            if (smartlinks.length > 1) {
+                const groupLabel = document.createElement('div');
+                groupLabel.className = 'smartlink-group-label';
+                const displayUrl = smartlink.length > 45 ? smartlink.substring(0, 45) + '...' : smartlink;
+                groupLabel.innerHTML = `
+                    <span>Smartlink #${slIndex + 1}: ${displayUrl}</span>
+                    <span>${linkCount} link</span>
+                `;
+                outputDiv.appendChild(groupLabel);
+            }
+
+            for (let i = 0; i < linkCount; i++) {
+                const randomCode = makeId(8);
+                let finalLink;
+
+                if (!useLP) {
+                    const sep = smartlink.includes('?') ? '&' : '?';
+                    finalLink = smartlink + sep + randomCode;
+                } else {
+                    const randomLP = lps[Math.floor(Math.random() * lps.length)];
+                    const encodedSmartlink = encodeURIComponent(smartlink);
+                    const lpSep = randomLP.includes('?') ? '&' : '?';
+                    finalLink = randomLP + lpSep + "dest=" + encodedSmartlink + "&id=" + randomCode;
+                }
+
+                addLinkToOutput(finalLink);
+                totalLinks++;
+            }
+
+            smartlinkCounts.push({ index: slIndex + 1, count: linkCount });
+        });
+
+        // Summary bar
+        let summaryHTML = `<div class="summary-chip">Total: <strong>${totalLinks}</strong></div>`;
+        if (smartlinks.length > 1) {
+            smartlinkCounts.forEach(sc => {
+                summaryHTML += `<div class="summary-chip">#${sc.index}: <strong>${sc.count}</strong></div>`;
+            });
+        }
+        if (useLP) {
+            summaryHTML += `<div class="summary-chip">LP: <strong>${lps.length}</strong></div>`;
+        } else {
+            summaryHTML += `<div class="summary-chip">Mode: <strong>Direct</strong></div>`;
+        }
+        summaryBar.innerHTML = summaryHTML;
+
+        // Subtitle
+        const distDetail = smartlinkCounts.map(sc => sc.count).join(' + ');
+        subtitle.textContent = smartlinks.length > 1 
+            ? `Distribusi: ${distDetail} = ${totalLinks} link`
+            : `${totalLinks} link dihasilkan`;
+
+        outputBox.style.display = 'block';
+        outputBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function addLinkToOutput(link) {
+        const outputDiv = document.getElementById('outputList');
+        const div = document.createElement('div');
+        div.className = 'item';
+        const safeLink = link.replace(/'/g, "\\'");
+        div.innerHTML = `
+            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:10px;" title="${safeLink}">${link}</span>
+            <button class="copy-btn" onclick="copySingle(this, '${safeLink}')">Salin</button>
+        `;
+        outputDiv.appendChild(div);
+    }
+
+    function copySingle(btn, link) {
+        navigator.clipboard.writeText(link).then(() => {
+            const original = btn.textContent;
+            btn.textContent = '✓';
+            btn.style.color = '#48bb78';
+            btn.style.borderColor = '#48bb78';
+            setTimeout(() => {
+                btn.textContent = original;
+                btn.style.color = '';
+                btn.style.borderColor = '';
+            }, 1000);
+        });
+    }
+
+    function copyAll() {
+        const items = document.querySelectorAll('.item span');
+        if (items.length === 0) return;
+        let allText = "";
+        items.forEach(item => { allText += item.innerText + "\n"; });
+        navigator.clipboard.writeText(allText).then(() => {
+            showToast(`Semua ${items.length} link tersalin!`);
+        });
+    }
+
+    function resetForm() {
+        smartlinkCounter = 1;
+        document.getElementById('smartlinkList').innerHTML = `
+            <div class="smartlink-row" data-index="1">
+                <div class="row-number">1</div>
+                <input type="text" class="smartlink-input" placeholder="https://smartlink.com/?ref=user" value="">
+                <button class="btn-remove-smartlink" onclick="removeSmartlinkRow(this)" title="Hapus">×</button>
+            </div>
+        `;
+        updateSmartlinkBadge();
+        document.getElementById('count').value = '10';
+        document.getElementById('lpCustomInput').value = '';
+        document.getElementById('masterSwitch').checked = false;
+        toggleMasterSwitch();
+        document.querySelectorAll('.lp-item').forEach(item => {
+            item.classList.remove('selected');
+            item.querySelector('input[type="checkbox"]').checked = false;
+        });
+        document.getElementById('outputBox').style.display = 'none';
+        document.getElementById('outputList').innerHTML = '';
+        document.getElementById('summaryBar').innerHTML = '';
+        showToast("Form di-reset!");
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.className = "show";
+        setTimeout(function() { toast.className = toast.className.replace("show", ""); }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', initTheme);
+</script>
+
+</body>
+</html>
