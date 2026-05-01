@@ -23,8 +23,6 @@
             --btn-reset-bg: #cbd5e0;
             --btn-reset-text: #4a5568;
             --btn-reset-hover: #a0aec0;
-            --lp-selected-bg: #f0fff4;
-            --lp-selected-border: #48bb78;
             --shadow-card: 0 10px 25px rgba(0,0,0,0.05);
             --shadow-input: 0 0 0 3px var(--input-focus-ring);
             --danger: #fc8181;
@@ -54,8 +52,6 @@
             --btn-reset-bg: #334155;
             --btn-reset-text: #94a3b8;
             --btn-reset-hover: #475569;
-            --lp-selected-bg: rgba(72, 187, 120, 0.1);
-            --lp-selected-border: #48bb78;
             --shadow-card: 0 10px 25px rgba(0,0,0,0.4);
             --danger: #f56565;
             --danger-bg: rgba(245, 101, 101, 0.1);
@@ -391,24 +387,6 @@
             display: none;
         }
 
-        /* ===== LP Section ===== */
-        .lp-control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            padding: 4px 10px;
-            background: var(--input-bg);
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-
-        .lp-status-text {
-            font-weight: 600;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
         .switch {
             position: relative;
             display: inline-block;
@@ -437,45 +415,6 @@
         }
         input:checked + .slider { background-color: var(--switch-bg-on); }
         input:checked + .slider:before { transform: translateX(16px); }
-
-        .lp-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3px;
-            margin-bottom: 5px;
-        }
-
-        .lp-item {
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 4px;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s;
-            background: var(--bg-card);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 40px;
-        }
-        .lp-item:hover { border-color: var(--text-muted); }
-        .lp-item.selected {
-            border-color: var(--lp-selected-border);
-            background-color: var(--lp-selected-bg);
-        }
-
-        .lp-name { font-weight: bold; font-size: 0.75rem; color: var(--text-main); flex-grow: 1; text-align:center; }
-        .lp-checkbox {
-            width: 14px; height: 14px;
-            accent-color: var(--switch-bg-on);
-            cursor: pointer;
-        }
-
-        .lp-container-disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            filter: grayscale(1);
-        }
 
         .btn-group {
             display: grid;
@@ -551,11 +490,6 @@
             color: var(--fb-blue);
             border-color: var(--fb-blue-border);
         }
-        .info-badge.lp-badge {
-            background: var(--lp-selected-bg);
-            color: var(--lp-selected-border);
-            border-color: var(--lp-selected-border);
-        }
 
         .list-container {
             max-height: 400px;
@@ -599,18 +533,6 @@
             flex-shrink: 0;
         } 
         .copy-btn:hover { background: var(--border); color: var(--text-main); }
-
-        .lp-custom-input {
-            display: none; 
-            margin-top: 5px;
-            padding: 5px;
-            background: rgba(251, 211, 141, 0.1);
-            border: 1px solid #fbd38d;
-            border-radius: 6px;
-        }
-        [data-theme="dark"] .lp-custom-input {
-            background: rgba(251, 211, 141, 0.05);
-        }
 
         #toast {
             visibility: hidden;
@@ -710,37 +632,6 @@
             </div>
             <div class="cloak-preview" id="cloakPreview">
                 <span style="color:var(--text-muted); font-style:italic;">Preview: </span><span id="cloakPreviewUrl">—</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- LP Section -->
-    <div class="form-group" style="border: 1px solid var(--border); border-radius: 8px; padding: 8px;">
-        <div class="lp-control-header">
-            <div id="lpStatusText" class="lp-status-text">Off (Direct)</div>
-            <label class="switch">
-                <input type="checkbox" id="masterSwitch" onchange="toggleMasterSwitch()">
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div id="lpContainer" class="lp-container-disabled">
-            <div class="lp-grid">
-                <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp1/">
-                    <div class="lp-name">LP 1</div>
-                    <input type="checkbox" class="lp-checkbox">
-                </div>
-                <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp2/">
-                    <div class="lp-name">LP 2</div>
-                    <input type="checkbox" class="lp-checkbox">
-                </div>
-                <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp3/">
-                    <div class="lp-name">LP 3</div>
-                    <input type="checkbox" class="lp-checkbox">
-                </div>
-            </div>
-            <div class="lp-custom-input">
-                <label style="font-size:10px; margin-bottom:3px;">URL LP Custom:</label>
-                <input type="text" id="lpCustomInput" placeholder="https://..." style="padding:5px; border:1px solid #e2e8f0; font-size:11px;">
             </div>
         </div>
     </div>
@@ -901,37 +792,6 @@
         return prefix + encodeURIComponent(url);
     }
 
-    /* ========== LP ========== */
-    function toggleMasterSwitch() {
-        const isOn = document.getElementById('masterSwitch').checked;
-        const container = document.getElementById('lpContainer');
-        const statusText = document.getElementById('lpStatusText');
-        if (isOn) {
-            container.classList.remove('lp-container-disabled');
-            statusText.innerText = "On (aktif)";
-            statusText.style.color = "#48bb78";
-        } else {
-            container.classList.add('lp-container-disabled');
-            statusText.innerText = "Off (Direct)";
-            statusText.style.color = "#718096";
-        }
-    }
-    function toggleLPSelection(element) {
-        if (!document.getElementById('masterSwitch').checked) return;
-        element.classList.toggle('selected');
-        element.querySelector('input[type="checkbox"]').checked = !element.querySelector('input[type="checkbox"]').checked;
-    }
-    function getSelectedLPs() {
-        if (!document.getElementById('masterSwitch').checked) return [];
-        const customUrl = document.getElementById('lpCustomInput').value.trim();
-        if (customUrl) return [customUrl];
-        const urls = [];
-        document.querySelectorAll('.lp-checkbox:checked').forEach(box => {
-            urls.push(box.parentElement.getAttribute('data-url'));
-        });
-        return urls;
-    }
-
     /* ========== UTILS ========== */
     function makeId(length) {
         let result = '';
@@ -943,9 +803,7 @@
     /* ========== GENERATE ========== */
     function generate() {
         const smartlinks = getSmartlinks();
-        const lps = getSelectedLPs();
         const totalRequested = parseInt(document.getElementById('count').value);
-        const useLP = lps.length > 0;
         const useCloak = cloakEnabled && getActiveCloakPrefix() !== '';
         const outputDiv = document.getElementById('outputList');
         const outputBox = document.getElementById('outputBox');
@@ -980,22 +838,16 @@
         // Generate
         pool.forEach(smartlink => {
             const randomCode = makeId(8);
-            let innerLink;
+            let finalLink;
 
-            // Step 1: Bangun link dasar + random ID
+            // Bangun link dasar + random ID
             const sep = smartlink.includes('?') ? '&' : '?';
-            innerLink = smartlink + sep + randomCode;
+            finalLink = smartlink + sep + randomCode;
 
-            // Step 2: Wrap ke LP jika aktif
-            if (useLP) {
-                const randomLP = lps[Math.floor(Math.random() * lps.length)];
-                const encodedDest = encodeURIComponent(innerLink);
-                const lpSep = randomLP.includes('?') ? '&' : '?';
-                innerLink = randomLP + lpSep + "dest=" + encodedDest + "&id=" + randomCode;
+            // Cloaking FB (membungkus link)
+            if (useCloak) {
+                finalLink = applyCloaking(finalLink);
             }
-
-            // Step 3: Cloaking FB (paling luar, membungkus semua)
-            let finalLink = useCloak ? applyCloaking(innerLink) : innerLink;
 
             const div = document.createElement('div');
             div.className = 'item';
@@ -1007,19 +859,13 @@
             outputDiv.appendChild(div);
         });
 
-        // Info badges
+        // Info badge cloaking
         if (useCloak) {
             const prefix = getActiveCloakPrefix();
             const shortPrefix = prefix.replace('https://', '').split('/')[0];
             const badge = document.createElement('span');
             badge.className = 'info-badge fb-badge';
             badge.textContent = 'f ' + shortPrefix;
-            badgesDiv.appendChild(badge);
-        }
-        if (useLP) {
-            const badge = document.createElement('span');
-            badge.className = 'info-badge lp-badge';
-            badge.textContent = 'LP ' + lps.length + ' aktif';
             badgesDiv.appendChild(badge);
         }
 
@@ -1060,13 +906,6 @@
         `;
         updateSmartlinkBadge();
         document.getElementById('count').value = '10';
-        document.getElementById('lpCustomInput').value = '';
-        document.getElementById('masterSwitch').checked = false;
-        toggleMasterSwitch();
-        document.querySelectorAll('.lp-item').forEach(item => {
-            item.classList.remove('selected');
-            item.querySelector('input[type="checkbox"]').checked = false;
-        });
 
         // Reset cloaking
         cloakEnabled = false;
