@@ -23,19 +23,15 @@
             --btn-reset-bg: #cbd5e0;
             --btn-reset-text: #4a5568;
             --btn-reset-hover: #a0aec0;
+            --lp-selected-bg: #f0fff4;
+            --lp-selected-border: #48bb78;
             --shadow-card: 0 10px 25px rgba(0,0,0,0.05);
             --shadow-input: 0 0 0 3px var(--input-focus-ring);
-            --danger: #fc8181;
-            --danger-bg: #fff5f5;
-            --danger-border: #feb2b2;
-            --tag-bg: #ebf4ff;
-            --tag-text: #3182ce;
-            --tag-border: #90cdf4;
+            --fb-selected-bg: #e7f3ff;
+            --fb-selected-border: #1877f2;
             --fb-blue: #1877f2;
             --fb-blue-bg: #e8f0fe;
             --fb-blue-border: #a8c7fa;
-            --fb-selected-bg: #e7f3ff;
-            --fb-selected-border: #1877f2;
         }
 
         [data-theme="dark"] {
@@ -52,18 +48,14 @@
             --btn-reset-bg: #334155;
             --btn-reset-text: #94a3b8;
             --btn-reset-hover: #475569;
+            --lp-selected-bg: rgba(72, 187, 120, 0.1);
+            --lp-selected-border: #48bb78;
             --shadow-card: 0 10px 25px rgba(0,0,0,0.4);
-            --danger: #f56565;
-            --danger-bg: rgba(245, 101, 101, 0.1);
-            --danger-border: #fc8181;
-            --tag-bg: rgba(49, 130, 206, 0.15);
-            --tag-text: #63b3ed;
-            --tag-border: #2b6cb0;
+            --fb-selected-bg: rgba(24, 119, 242, 0.12);
+            --fb-selected-border: #4d9aff;
             --fb-blue: #4d9aff;
             --fb-blue-bg: rgba(24, 119, 242, 0.1);
             --fb-blue-border: rgba(77, 154, 255, 0.3);
-            --fb-selected-bg: rgba(24, 119, 242, 0.12);
-            --fb-selected-border: #4d9aff;
         }
 
         body { 
@@ -82,8 +74,9 @@
             border-radius: 16px; 
             box-shadow: var(--shadow-card); 
             width: 100%; 
-            max-width: 640px; 
+            max-width: 600px; 
             transition: background 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         } 
         
         .header-row {
@@ -142,250 +135,41 @@
             box-shadow: var(--shadow-input);
         }
 
-        .smartlink-list-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .smartlink-count-badge {
-            font-size: 11px;
-            font-weight: 700;
-            background: var(--tag-bg);
-            color: var(--tag-text);
-            border: 1px solid var(--tag-border);
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-
-        .btn-add-smartlink {
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 6px 14px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .btn-add-smartlink:hover { opacity: 0.85; transform: translateY(-1px); }
-
-        .smartlink-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .smartlink-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            animation: slideIn 0.25s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .smartlink-row input { flex: 1; }
-
-        .smartlink-row .row-number {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--accent-primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-
-        .btn-remove-smartlink {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid var(--danger-border);
-            background: var(--danger-bg);
-            color: var(--danger);
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-        .btn-remove-smartlink:hover {
-            background: var(--danger);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        /* ===== Cloaking FB Panel ===== */
-        .cloak-panel {
-            border: 2px solid var(--fb-blue-border);
-            border-radius: 12px;
-            padding: 14px;
-            background: var(--fb-blue-bg);
-            transition: all 0.3s;
-        }
-
-        .cloak-panel.disabled {
-            border-color: var(--border);
-            background: var(--bg-card);
-            opacity: 0.7;
-        }
-
-        .cloak-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .cloak-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 14px;
-        }
-
-        .cloak-title .fb-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--fb-blue);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 13px;
-            font-weight: 800;
-        }
-
-        .cloak-panel.disabled .fb-icon {
-            background: var(--text-muted);
-        }
-
-        .cloak-methods {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-
-        .cloak-panel.disabled .cloak-methods {
-            opacity: 0.4;
-            pointer-events: none;
-            filter: grayscale(1);
-        }
-
-        .cloak-item {
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: var(--bg-card);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            text-align: center;
-            position: relative;
-        }
-        .cloak-item:hover { border-color: var(--text-muted); }
-        .cloak-item.selected {
-            border-color: var(--fb-selected-border);
-            background: var(--fb-selected-bg);
-        }
-
-        .cloak-prefix {
-            font-family: 'Courier New', monospace;
-            font-size: 9.5px;
-            font-weight: 700;
-            color: var(--text-secondary);
-            background: var(--input-bg);
-            padding: 3px 6px;
-            border-radius: 4px;
+        /* --- PANEL SECTION (LP & FB sama gaya) --- */
+        .panel-section {
             border: 1px solid var(--border);
-            word-break: break-all;
-            line-height: 1.4;
-            transition: all 0.2s;
-        }
-        .cloak-item.selected .cloak-prefix {
-            color: var(--fb-blue);
-            border-color: var(--fb-blue-border);
-            background: var(--fb-blue-bg);
+            border-radius: 8px;
+            padding: 8px;
         }
 
-        .cloak-item .check-dot {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
+        .panel-control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+            padding: 4px 10px;
+            background: var(--input-bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .panel-status-text {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.75rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            font-size: 8px;
-            color: transparent;
-        }
-        .cloak-item.selected .check-dot {
-            background: var(--fb-selected-border);
-            border-color: var(--fb-selected-border);
-            color: white;
+            gap: 6px;
         }
 
-        .cloak-custom-row {
-            display: none;
-            margin-top: 10px;
-            animation: slideIn 0.25s ease;
+        .panel-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            transition: background 0.3s;
         }
-        .cloak-custom-row.show { display: block; }
-        .cloak-custom-row label {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-        .cloak-custom-row input {
-            padding: 8px 12px;
-            font-size: 12px;
-            border-width: 1px;
-        }
-
-        .cloak-preview {
-            margin-top: 10px;
-            padding: 8px 12px;
-            background: var(--input-bg);
-            border: 1px dashed var(--border);
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            color: var(--text-muted);
-            word-break: break-all;
-            line-height: 1.5;
-            transition: all 0.3s;
-        }
-
-        .cloak-panel.disabled .cloak-preview {
-            display: none;
-        }
+        .panel-status-dot.on { background: var(--switch-bg-on); }
 
         .switch {
             position: relative;
@@ -416,6 +200,177 @@
         input:checked + .slider { background-color: var(--switch-bg-on); }
         input:checked + .slider:before { transform: translateX(16px); }
 
+        .panel-container-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            filter: grayscale(1);
+        }
+
+        /* --- LP GRID --- */
+        .lp-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+
+        .lp-item {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 40px;
+        }
+        .lp-item:hover { border-color: var(--text-muted); }
+        .lp-item.selected {
+            border-color: var(--lp-selected-border);
+            background-color: var(--lp-selected-bg);
+        }
+        .lp-name { 
+            font-weight: bold; 
+            font-size: 0.75rem; 
+            color: var(--text-main); 
+            flex-grow: 1; 
+            text-align: center;
+        }
+        .lp-checkbox {
+            width: 14px; 
+            height: 14px;
+            accent-color: var(--switch-bg-on);
+            cursor: pointer;
+        }
+
+        .lp-custom-input {
+            display: none; 
+            margin-top: 5px;
+            padding: 5px;
+            background: rgba(251, 211, 141, 0.1);
+            border: 1px solid #fbd38d;
+            border-radius: 6px;
+        }
+        [data-theme="dark"] .lp-custom-input {
+            background: rgba(251, 211, 141, 0.05);
+        }
+
+        /* --- FB CLOAK GRID --- */
+        .fb-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+
+        .fb-item {
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+        }
+        .fb-item:hover { border-color: var(--text-muted); }
+        .fb-item.selected {
+            border-color: var(--fb-selected-border);
+            background-color: var(--fb-selected-bg);
+        }
+
+        .fb-prefix-text {
+            font-family: 'Courier New', monospace;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.3;
+            word-break: break-all;
+            transition: color 0.2s;
+        }
+        .fb-item.selected .fb-prefix-text {
+            color: var(--fb-blue);
+        }
+
+        .fb-custom-input {
+            display: none; 
+            margin-top: 5px;
+            padding: 5px;
+            background: var(--fb-blue-bg);
+            border: 1px solid var(--fb-blue-border);
+            border-radius: 6px;
+        }
+
+        /* --- PIPELINE VISUAL --- */
+        .pipeline-visual {
+            display: none;
+            margin-bottom: 20px;
+            padding: 8px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+        }
+        .pipeline-visual.show { display: block; }
+
+        .pipeline-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+        }
+
+        .pipeline-steps {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .pipeline-step {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 5px;
+            border: 1px solid;
+            white-space: nowrap;
+        }
+        .pipeline-step.step-smartlink {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--accent-primary);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+        .pipeline-step.step-lp {
+            background: var(--lp-selected-bg);
+            color: var(--lp-selected-border);
+            border-color: var(--lp-selected-border);
+        }
+        .pipeline-step.step-fb {
+            background: var(--fb-blue-bg);
+            color: var(--fb-blue);
+            border-color: var(--fb-blue-border);
+        }
+        .pipeline-arrow {
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- BUTTONS --- */
         .btn-group {
             display: grid;
             grid-template-columns: 3fr 1fr;
@@ -447,6 +402,7 @@
         }
         .btn-reset:hover { background: var(--btn-reset-hover); }
 
+        /* --- OUTPUT --- */
         .output-box { 
             margin-top: 30px; 
             border-top: 2px dashed var(--border); 
@@ -485,6 +441,11 @@
             border-radius: 20px;
             border: 1px solid;
         }
+        .info-badge.lp-badge {
+            background: var(--lp-selected-bg);
+            color: var(--lp-selected-border);
+            border-color: var(--lp-selected-border);
+        }
         .info-badge.fb-badge {
             background: var(--fb-blue-bg);
             color: var(--fb-blue);
@@ -492,24 +453,22 @@
         }
 
         .list-container {
-            max-height: 400px;
+            max-height: 300px;
             overflow-y: auto;
             background: var(--input-bg);
             border-radius: 8px;
             padding: 5px;
             border: 1px solid var(--border);
         }
-
         .list-container::-webkit-scrollbar { width: 6px; }
         .list-container::-webkit-scrollbar-track { background: transparent; }
         .list-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        .list-container::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
         .item { 
             background: var(--bg-card); 
             border: 1px solid var(--border); 
             padding: 10px 12px; 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
             border-radius: 6px; 
             display: flex; 
             justify-content: space-between; 
@@ -556,9 +515,8 @@
         @media (max-width: 500px) {
             .card { padding: 20px; }
             h2 { font-size: 1.4rem; }
-            .smartlink-row .row-number { width: 24px; height: 24px; font-size: 10px; }
-            .cloak-methods { grid-template-columns: 1fr 1fr; gap: 6px; }
-            .cloak-prefix { font-size: 8.5px; }
+            .fb-prefix-text { font-size: 0.55rem; }
+            .fb-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -579,61 +537,86 @@
 
     <!-- Smartlink Input -->
     <div class="form-group">
-        <div class="smartlink-list-header">
-            <label style="margin-bottom:0;">Smartlink</label>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <span class="smartlink-count-badge" id="smartlinkBadge">1 link</span>
-                <button class="btn-add-smartlink" onclick="addSmartlinkRow()">+ Tambah</button>
+        <label>Smartlink Asli</label>
+        <input type="text" id="smartlinkInput" placeholder="https://smartlink.com/?ref=user">
+    </div>
+
+    <!-- Landing Page Panel -->
+    <div class="form-group">
+        <div class="panel-section">
+            <div class="panel-control-header">
+                <div class="panel-status-text">
+                    <span class="panel-status-dot" id="lpDot"></span>
+                    <span id="lpStatusText">Off (Direct)</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="lpSwitch" onchange="toggleLP()">
+                    <span class="slider"></span>
+                </label>
             </div>
-        </div>
-        <div class="smartlink-list" id="smartlinkList">
-            <div class="smartlink-row" data-index="1">
-                <div class="row-number">1</div>
-                <input type="text" class="smartlink-input" placeholder="https://smartlink.com/?ref=user" value="">
-                <button class="btn-remove-smartlink" onclick="removeSmartlinkRow(this)" title="Hapus">×</button>
+            <div id="lpContainer" class="panel-container-disabled">
+                <div class="lp-grid">
+                    <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp1/">
+                        <div class="lp-name">LP 1</div>
+                        <input type="checkbox" class="lp-checkbox">
+                    </div>
+                    <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp2/">
+                        <div class="lp-name">LP 2</div>
+                        <input type="checkbox" class="lp-checkbox">
+                    </div>
+                    <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp3/">
+                        <div class="lp-name">LP 3</div>
+                        <input type="checkbox" class="lp-checkbox">
+                    </div>
+                </div>
+                <div class="lp-custom-input" id="lpCustomBox">
+                    <label style="font-size:10px; margin-bottom:3px;">URL LP Custom:</label>
+                    <input type="text" id="lpCustomInput" placeholder="https://..." style="padding:5px; border:1px solid #e2e8f0; font-size:11px;">
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Cloaking FB Panel -->
     <div class="form-group">
-        <div class="cloak-panel disabled" id="cloakPanel">
-            <div class="cloak-header-row">
-                <div class="cloak-title">
-                    <div class="fb-icon">f</div>
-                    <span>Cloaking FB</span>
+        <div class="panel-section">
+            <div class="panel-control-header">
+                <div class="panel-status-text">
+                    <span class="panel-status-dot" id="fbDot"></span>
+                    <span id="fbStatusText">Off (Direct)</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="cloakSwitch" onchange="toggleCloak()">
+                    <input type="checkbox" id="fbSwitch" onchange="toggleFB()">
                     <span class="slider"></span>
                 </label>
             </div>
-            <div class="cloak-methods">
-                <div class="cloak-item selected" onclick="selectCloak(this)" data-prefix="https://web.facebook.com/l.php?u=">
-                    <div class="check-dot">✓</div>
-                    <div class="cloak-prefix">web.facebook.com/l.php?u=</div>
+            <div id="fbContainer" class="panel-container-disabled">
+                <div class="fb-grid">
+                    <div class="fb-item selected" onclick="selectFB(this)" data-prefix="https://web.facebook.com/l.php?u=">
+                        <span class="fb-prefix-text">web.facebook.com/l.php?u=</span>
+                    </div>
+                    <div class="fb-item" onclick="selectFB(this)" data-prefix="https://l.facebook.com/l.php?u=">
+                        <span class="fb-prefix-text">l.facebook.com/l.php?u=</span>
+                    </div>
+                    <div class="fb-item" onclick="selectFB(this)" data-prefix="https://m.facebook.com/l.php?u=">
+                        <span class="fb-prefix-text">m.facebook.com/l.php?u=</span>
+                    </div>
+                    <div class="fb-item" onclick="selectFB(this)" data-prefix="custom">
+                        <span class="fb-prefix-text">Custom prefix...</span>
+                    </div>
                 </div>
-                <div class="cloak-item" onclick="selectCloak(this)" data-prefix="https://l.facebook.com/l.php?u=">
-                    <div class="check-dot">✓</div>
-                    <div class="cloak-prefix">l.facebook.com/l.php?u=</div>
+                <div class="fb-custom-input" id="fbCustomBox">
+                    <label style="font-size:10px; margin-bottom:3px; color:var(--text-muted);">Prefix URL custom:</label>
+                    <input type="text" id="fbCustomInput" placeholder="https://domain.com/redirect?u=" style="padding:5px; border:1px solid var(--border); font-size:11px; background:var(--input-bg); color:var(--text-main);">
                 </div>
-                <div class="cloak-item" onclick="selectCloak(this)" data-prefix="https://m.facebook.com/l.php?u=">
-                    <div class="check-dot">✓</div>
-                    <div class="cloak-prefix">m.facebook.com/l.php?u=</div>
-                </div>
-                <div class="cloak-item" onclick="selectCloak(this)" data-prefix="custom">
-                    <div class="check-dot">✓</div>
-                    <div class="cloak-prefix">Custom prefix...</div>
-                </div>
-            </div>
-            <div class="cloak-custom-row" id="cloakCustomRow">
-                <label>Prefix URL custom:</label>
-                <input type="text" id="cloakCustomPrefix" placeholder="https://domain.com/redirect?u=" oninput="updateCloakPreview()">
-            </div>
-            <div class="cloak-preview" id="cloakPreview">
-                <span style="color:var(--text-muted); font-style:italic;">Preview: </span><span id="cloakPreviewUrl">—</span>
             </div>
         </div>
+    </div>
+
+    <!-- Pipeline Visual -->
+    <div class="pipeline-visual" id="pipelineVisual">
+        <div class="pipeline-label">Alur Generate</div>
+        <div class="pipeline-steps" id="pipelineSteps"></div>
     </div>
 
     <!-- Jumlah Link -->
@@ -651,7 +634,7 @@
     <!-- Output -->
     <div id="outputBox" class="output-box">
         <div class="output-header">
-            <span class="output-title" id="outputTitle">Hasil Generate</span>
+            <span class="output-title">Hasil Generate (<span id="resultCount">0</span>):</span>
             <button class="btn-copy-all" onclick="copyAll()">📋 Salin Semua</button>
         </div>
         <div class="output-info-badges" id="outputBadges"></div>
@@ -662,9 +645,7 @@
 <div id="toast">Berhasil disalin!</div>
 
 <script>
-    let smartlinkCounter = 1;
-    let selectedCloakPrefix = 'https://web.facebook.com/l.php?u=';
-    let cloakEnabled = false;
+    let selectedFBPrefix = 'https://web.facebook.com/l.php?u=';
 
     /* ========== THEME ========== */
     function initTheme() {
@@ -683,195 +664,211 @@
         document.getElementById('iconMoon').style.display = theme === 'dark' ? 'block' : 'none';
     }
 
-    /* ========== SMARTLINK ROWS ========== */
-    function updateSmartlinkBadge() {
-        const count = document.querySelectorAll('.smartlink-row').length;
-        document.getElementById('smartlinkBadge').textContent = count + (count === 1 ? ' link' : ' link');
-    }
-    function addSmartlinkRow() {
-        smartlinkCounter++;
-        const list = document.getElementById('smartlinkList');
-        const row = document.createElement('div');
-        row.className = 'smartlink-row';
-        row.dataset.index = smartlinkCounter;
-        row.innerHTML = `
-            <div class="row-number">${smartlinkCounter}</div>
-            <input type="text" class="smartlink-input" placeholder="https://smartlink.com/?ref=user" value="" oninput="updateCloakPreview()">
-            <button class="btn-remove-smartlink" onclick="removeSmartlinkRow(this)" title="Hapus">×</button>
-        `;
-        list.appendChild(row);
-        updateSmartlinkBadge();
-        row.querySelector('input').focus();
-    }
-    function removeSmartlinkRow(btn) {
-        if (document.querySelectorAll('.smartlink-row').length <= 1) {
-            showToast('Minimal harus ada 1 smartlink!');
-            return;
+    /* ========== LANDING PAGE ========== */
+    function toggleLP() {
+        const isOn = document.getElementById('lpSwitch').checked;
+        const container = document.getElementById('lpContainer');
+        const statusText = document.getElementById('lpStatusText');
+        const dot = document.getElementById('lpDot');
+        if (isOn) {
+            container.classList.remove('panel-container-disabled');
+            statusText.innerText = "On (aktif)";
+            statusText.style.color = "#48bb78";
+            dot.classList.add('on');
+        } else {
+            container.classList.add('panel-container-disabled');
+            statusText.innerText = "Off (Direct)";
+            statusText.style.color = "#718096";
+            dot.classList.remove('on');
         }
-        const row = btn.closest('.smartlink-row');
-        row.style.transition = 'opacity 0.2s, transform 0.2s';
-        row.style.opacity = '0';
-        row.style.transform = 'translateX(20px)';
-        setTimeout(() => { row.remove(); renumberRows(); updateSmartlinkBadge(); updateCloakPreview(); }, 200);
+        updatePipeline();
     }
-    function renumberRows() {
-        document.querySelectorAll('.smartlink-row').forEach((row, i) => {
-            row.querySelector('.row-number').textContent = i + 1;
-        });
+
+    function toggleLPSelection(element) {
+        if (!document.getElementById('lpSwitch').checked) return;
+        element.classList.toggle('selected');
+        const checkbox = element.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
     }
-    function getSmartlinks() {
-        const links = [];
-        document.querySelectorAll('.smartlink-input').forEach(input => {
-            const val = input.value.trim();
-            if (val) links.push(val);
+
+    function getSelectedLPs() {
+        const urls = [];
+        const customUrl = document.getElementById('lpCustomInput').value.trim();
+        if (customUrl) {
+            urls.push(customUrl);
+            return urls;
+        }
+        const checked = document.querySelectorAll('.lp-checkbox:checked');
+        checked.forEach(box => {
+            urls.push(box.parentElement.getAttribute('data-url'));
         });
-        return links;
+        return urls;
+    }
+
+    function applyLP(url, lpUrl) {
+        const sep = lpUrl.includes('?') ? '&' : '?';
+        return lpUrl + sep + 'dest=' + encodeURIComponent(url);
     }
 
     /* ========== CLOAKING FB ========== */
-    function toggleCloak() {
-        cloakEnabled = document.getElementById('cloakSwitch').checked;
-        const panel = document.getElementById('cloakPanel');
-        if (cloakEnabled) {
-            panel.classList.remove('disabled');
+    function toggleFB() {
+        const isOn = document.getElementById('fbSwitch').checked;
+        const container = document.getElementById('fbContainer');
+        const statusText = document.getElementById('fbStatusText');
+        const dot = document.getElementById('fbDot');
+        if (isOn) {
+            container.classList.remove('panel-container-disabled');
+            statusText.innerText = "On (aktif)";
+            statusText.style.color = "#48bb78";
+            dot.classList.add('on');
         } else {
-            panel.classList.add('disabled');
+            container.classList.add('panel-container-disabled');
+            statusText.innerText = "Off (Direct)";
+            statusText.style.color = "#718096";
+            dot.classList.remove('on');
         }
-        updateCloakPreview();
+        updatePipeline();
     }
 
-    function selectCloak(el) {
-        document.querySelectorAll('.cloak-item').forEach(item => item.classList.remove('selected'));
+    function selectFB(el) {
+        if (!document.getElementById('fbSwitch').checked) return;
+        document.querySelectorAll('.fb-item').forEach(item => item.classList.remove('selected'));
         el.classList.add('selected');
         const prefix = el.getAttribute('data-prefix');
-        const customRow = document.getElementById('cloakCustomRow');
-
+        const customBox = document.getElementById('fbCustomBox');
         if (prefix === 'custom') {
-            selectedCloakPrefix = '';
-            customRow.classList.add('show');
-            setTimeout(() => document.getElementById('cloakCustomPrefix').focus(), 100);
+            selectedFBPrefix = '';
+            customBox.style.display = 'block';
+            setTimeout(() => document.getElementById('fbCustomInput').focus(), 100);
         } else {
-            selectedCloakPrefix = prefix;
-            customRow.classList.remove('show');
+            selectedFBPrefix = prefix;
+            customBox.style.display = 'none';
         }
-        updateCloakPreview();
     }
 
-    function getActiveCloakPrefix() {
-        if (!cloakEnabled) return '';
-        const selected = document.querySelector('.cloak-item.selected');
+    function getActiveFBPrefix() {
+        if (!document.getElementById('fbSwitch').checked) return '';
+        const selected = document.querySelector('.fb-item.selected');
         if (!selected) return '';
         if (selected.getAttribute('data-prefix') === 'custom') {
-            return document.getElementById('cloakCustomPrefix').value.trim();
+            return document.getElementById('fbCustomInput').value.trim();
         }
-        return selectedCloakPrefix;
+        return selectedFBPrefix;
     }
 
-    function updateCloakPreview() {
-        const previewEl = document.getElementById('cloakPreviewUrl');
-        if (!cloakEnabled) {
-            previewEl.textContent = '—';
-            return;
-        }
-        const prefix = getActiveCloakPrefix();
-        if (!prefix) {
-            previewEl.textContent = 'Isi prefix dulu...';
-            return;
-        }
-        const firstLink = document.querySelector('.smartlink-input')?.value.trim();
-        if (!firstLink) {
-            previewEl.textContent = prefix + '...';
-            return;
-        }
-        previewEl.textContent = prefix + encodeURIComponent(firstLink);
-    }
-
-    function applyCloaking(url) {
-        const prefix = getActiveCloakPrefix();
+    function applyFB(url) {
+        const prefix = getActiveFBPrefix();
         if (!prefix) return url;
         return prefix + encodeURIComponent(url);
+    }
+
+    /* ========== PIPELINE ========== */
+    function updatePipeline() {
+        const container = document.getElementById('pipelineVisual');
+        const steps = document.getElementById('pipelineSteps');
+        const lpOn = document.getElementById('lpSwitch').checked;
+        const fbOn = document.getElementById('fbSwitch').checked;
+        if (!lpOn && !fbOn) {
+            container.classList.remove('show');
+            return;
+        }
+        container.classList.add('show');
+        let html = '<span class="pipeline-step step-smartlink">Smartlink</span>';
+        if (lpOn) {
+            html += '<span class="pipeline-arrow">→</span>';
+            html += '<span class="pipeline-step step-lp">🏠 Landing Page</span>';
+        }
+        if (fbOn) {
+            html += '<span class="pipeline-arrow">→</span>';
+            html += '<span class="pipeline-step step-fb">f Cloaking FB</span>';
+        }
+        steps.innerHTML = html;
     }
 
     /* ========== UTILS ========== */
     function makeId(length) {
         let result = '';
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+        for (let i = 0; i < length; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
         return result;
     }
 
     /* ========== GENERATE ========== */
     function generate() {
-        const smartlinks = getSmartlinks();
-        const totalRequested = parseInt(document.getElementById('count').value);
-        const useCloak = cloakEnabled && getActiveCloakPrefix() !== '';
+        const smartlink = document.getElementById('smartlinkInput').value.trim();
+        const count = parseInt(document.getElementById('count').value);
+        const lpOn = document.getElementById('lpSwitch').checked;
+        const fbOn = document.getElementById('fbSwitch').checked;
+        const fbPrefix = getActiveFBPrefix();
+
         const outputDiv = document.getElementById('outputList');
         const outputBox = document.getElementById('outputBox');
         const badgesDiv = document.getElementById('outputBadges');
+        const resultCount = document.getElementById('resultCount');
 
         outputDiv.innerHTML = '';
         badgesDiv.innerHTML = '';
 
-        if (smartlinks.length === 0) { showToast('Isi minimal 1 smartlink!'); return; }
-        if (isNaN(totalRequested) || totalRequested < 1) { showToast('Jumlah link tidak valid!'); return; }
-        if (cloakEnabled && !getActiveCloakPrefix()) { showToast('Pilih atau isi prefix cloaking!'); return; }
+        if (!smartlink) { showToast('Isi Smartlink dulu!'); return; }
+        if (isNaN(count) || count < 1) { showToast('Jumlah link tidak valid!'); return; }
+        if (lpOn && getSelectedLPs().length === 0) { showToast('Pilih minimal satu Landing Page!'); return; }
+        if (fbOn && !fbPrefix) { showToast('Pilih atau isi prefix cloaking!'); return; }
 
-        let totalToGenerate = totalRequested;
-        if (totalToGenerate < smartlinks.length) {
-            totalToGenerate = smartlinks.length;
-            showToast(`Dikoreksi jadi ${totalToGenerate} link`);
-        }
+        const lpList = lpOn ? getSelectedLPs() : [];
 
-        // Bangun pool
-        const pool = [];
-        for (let i = 0; i < smartlinks.length; i++) pool.push(smartlinks[i]);
-        for (let i = smartlinks.length; i < totalToGenerate; i++) {
-            pool.push(smartlinks[Math.floor(Math.random() * smartlinks.length)]);
-        }
-
-        // Shuffle
-        for (let i = pool.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [pool[i], pool[j]] = [pool[j], pool[i]];
-        }
-
-        // Generate
-        pool.forEach(smartlink => {
+        let totalLinks = 0;
+        for (let i = 0; i < count; i++) {
             const randomCode = makeId(8);
-            let finalLink;
-
-            // Bangun link dasar + random ID
             const sep = smartlink.includes('?') ? '&' : '?';
-            finalLink = smartlink + sep + randomCode;
+            let finalLink = smartlink + sep + randomCode;
 
-            // Cloaking FB (membungkus link)
-            if (useCloak) {
-                finalLink = applyCloaking(finalLink);
+            // Step 2: Wrap LP (random pick dari yang terpilih)
+            if (lpOn && lpList.length > 0) {
+                const randomLP = lpList[Math.floor(Math.random() * lpList.length)];
+                finalLink = applyLP(finalLink, randomLP);
             }
 
-            const div = document.createElement('div');
-            div.className = 'item';
-            const safeLink = finalLink.replace(/&/g, '&amp;').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-            div.innerHTML = `
-                <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:10px;" title="${safeLink}">${finalLink}</span>
-                <button class="copy-btn" onclick="copySingle(this, this.parentElement.querySelector('span').innerText)">Salin</button>
-            `;
-            outputDiv.appendChild(div);
-        });
+            // Step 3: Wrap FB Cloaking
+            if (fbOn && fbPrefix) {
+                finalLink = applyFB(finalLink);
+            }
 
-        // Info badge cloaking
-        if (useCloak) {
-            const prefix = getActiveCloakPrefix();
-            const shortPrefix = prefix.replace('https://', '').split('/')[0];
+            addLinkToOutput(finalLink);
+            totalLinks++;
+        }
+
+        // Info badges
+        if (lpOn) {
+            const badge = document.createElement('span');
+            badge.className = 'info-badge lp-badge';
+            badge.textContent = '🏠 ' + lpList.length + ' LP';
+            badgesDiv.appendChild(badge);
+        }
+        if (fbOn) {
+            const shortPrefix = fbPrefix.replace('https://', '').split('/')[0];
             const badge = document.createElement('span');
             badge.className = 'info-badge fb-badge';
             badge.textContent = 'f ' + shortPrefix;
             badgesDiv.appendChild(badge);
         }
 
-        document.getElementById('outputTitle').textContent = `Hasil Generate (${totalToGenerate})`;
         outputBox.style.display = 'block';
+        resultCount.innerText = totalLinks;
         outputBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function addLinkToOutput(link) {
+        const outputDiv = document.getElementById('outputList');
+        const safeLink = link.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+            <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:10px;" title="${safeLink}">${link}</span>
+            <button class="copy-btn" onclick="copySingle(this, this.parentElement.querySelector('span').innerText)">Salin</button>
+        `;
+        outputDiv.appendChild(div);
     }
 
     /* ========== COPY ========== */
@@ -884,52 +881,56 @@
             setTimeout(() => { btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 1000);
         });
     }
+
     function copyAll() {
         const items = document.querySelectorAll('.item span');
-        if (!items.length) return;
+        if (items.length === 0) return;
         let allText = "";
         items.forEach(item => { allText += item.innerText + "\n"; });
         navigator.clipboard.writeText(allText).then(() => {
-            showToast(`Semua ${items.length} link tersalin!`);
+            showToast('Semua ' + items.length + ' link tersalin!');
         });
     }
 
     /* ========== RESET ========== */
     function resetForm() {
-        smartlinkCounter = 1;
-        document.getElementById('smartlinkList').innerHTML = `
-            <div class="smartlink-row" data-index="1">
-                <div class="row-number">1</div>
-                <input type="text" class="smartlink-input" placeholder="https://smartlink.com/?ref=user" value="" oninput="updateCloakPreview()">
-                <button class="btn-remove-smartlink" onclick="removeSmartlinkRow(this)" title="Hapus">×</button>
-            </div>
-        `;
-        updateSmartlinkBadge();
+        document.getElementById('smartlinkInput').value = '';
         document.getElementById('count').value = '10';
 
-        // Reset cloaking
-        cloakEnabled = false;
-        selectedCloakPrefix = 'https://web.facebook.com/l.php?u=';
-        document.getElementById('cloakSwitch').checked = false;
-        document.getElementById('cloakPanel').classList.add('disabled');
-        document.getElementById('cloakCustomPrefix').value = '';
-        document.getElementById('cloakCustomRow').classList.remove('show');
-        document.querySelectorAll('.cloak-item').forEach(item => item.classList.remove('selected'));
-        document.querySelector('.cloak-item[data-prefix="https://web.facebook.com/l.php?u="]').classList.add('selected');
-        document.getElementById('cloakPreviewUrl').textContent = '—';
+        // Reset LP
+        document.getElementById('lpSwitch').checked = false;
+        toggleLP();
+        document.getElementById('lpCustomInput').value = '';
+        document.getElementById('lpCustomBox').style.display = 'none';
+        document.querySelectorAll('.lp-item').forEach(item => {
+            item.classList.remove('selected');
+            item.querySelector('input[type="checkbox"]').checked = false;
+        });
 
+        // Reset FB
+        document.getElementById('fbSwitch').checked = false;
+        toggleFB();
+        document.getElementById('fbCustomInput').value = '';
+        document.getElementById('fbCustomBox').style.display = 'none';
+        selectedFBPrefix = 'https://web.facebook.com/l.php?u=';
+        document.querySelectorAll('.fb-item').forEach(item => item.classList.remove('selected'));
+        document.querySelector('.fb-item[data-prefix="https://web.facebook.com/l.php?u="]').classList.add('selected');
+
+        // Reset pipeline & output
+        document.getElementById('pipelineVisual').classList.remove('show');
         document.getElementById('outputBox').style.display = 'none';
         document.getElementById('outputList').innerHTML = '';
         document.getElementById('outputBadges').innerHTML = '';
-        showToast("Form di-reset!");
+
+        showToast('Form di-reset!');
     }
 
     /* ========== TOAST ========== */
     function showToast(message) {
-        const toast = document.getElementById("toast");
+        const toast = document.getElementById('toast');
         toast.innerText = message;
-        toast.className = "show";
-        setTimeout(function() { toast.className = toast.className.replace("show", ""); }, 3000);
+        toast.className = 'show';
+        setTimeout(function() { toast.className = toast.className.replace('show', ''); }, 3000);
     }
 
     window.addEventListener('DOMContentLoaded', initTheme);
