@@ -32,11 +32,7 @@
             --fb-blue: #1877f2;
             --fb-blue-bg: #e8f0fe;
             --fb-blue-border: #a8c7fa;
-            --danger: #e53e3e;
-            --danger-bg: #fff5f5;
-            --danger-border: #feb2b2;
             --group-header-bg: #f7fafc;
-            --group-header-border: #e2e8f0;
         }
 
         [data-theme="dark"] {
@@ -61,11 +57,7 @@
             --fb-blue: #4d9aff;
             --fb-blue-bg: rgba(24, 119, 242, 0.1);
             --fb-blue-border: rgba(77, 154, 255, 0.3);
-            --danger: #fc8181;
-            --danger-bg: rgba(229, 62, 62, 0.1);
-            --danger-border: rgba(252, 129, 129, 0.3);
             --group-header-bg: rgba(247, 250, 252, 0.05);
-            --group-header-border: #334155;
         }
 
         body { 
@@ -173,7 +165,6 @@
             background: var(--lp-selected-bg);
         }
 
-        /* --- PANEL SECTION --- */
         .panel-section {
             border: 1px solid var(--border);
             border-radius: 8px;
@@ -244,7 +235,6 @@
             filter: grayscale(1);
         }
 
-        /* --- LP GRID --- */
         .lp-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -278,8 +268,7 @@
             text-align: center;
         }
         .lp-checkbox {
-            width: 14px; 
-            height: 14px;
+            width: 14px; height: 14px;
             accent-color: var(--switch-bg-on);
             cursor: pointer;
         }
@@ -296,7 +285,6 @@
             background: rgba(251, 211, 141, 0.05);
         }
 
-        /* --- FB CLOAK GRID --- */
         .fb-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -333,9 +321,7 @@
             word-break: break-all;
             transition: color 0.2s;
         }
-        .fb-item.selected .fb-prefix-text {
-            color: var(--fb-blue);
-        }
+        .fb-item.selected .fb-prefix-text { color: var(--fb-blue); }
 
         .fb-custom-input {
             display: none; 
@@ -346,7 +332,6 @@
             border-radius: 6px;
         }
 
-        /* --- PIPELINE VISUAL --- */
         .pipeline-visual {
             display: none;
             margin-bottom: 20px;
@@ -408,7 +393,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- DISTRIBUTION HINT --- */
         .distribution-hint {
             margin-top: 8px;
             padding: 8px 12px;
@@ -422,9 +406,7 @@
             animation: slideIn 0.2s ease;
         }
         .distribution-hint.show { display: flex; align-items: center; gap: 6px; }
-        .distribution-hint .dist-icon { font-size: 13px; }
 
-        /* --- BUTTONS --- */
         .btn-group {
             display: grid;
             grid-template-columns: 3fr 1fr;
@@ -462,6 +444,7 @@
             border-top: 2px dashed var(--border); 
             padding-top: 20px; 
             display: none; 
+            animation: slideIn 0.3s ease;
         }
 
         .output-header {
@@ -513,148 +496,12 @@
             border-color: rgba(102, 126, 234, 0.3);
         }
 
-        /* --- GROUPED OUTPUT --- */
-        .link-group {
-            margin-bottom: 16px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            animation: slideIn 0.3s ease;
-        }
-
-        .link-group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: var(--group-header-bg);
-            border-bottom: 1px solid var(--group-header-border);
-            cursor: pointer;
-            transition: background 0.2s;
-            user-select: none;
-        }
-        .link-group-header:hover {
-            background: var(--input-focus-ring);
-        }
-
-        .link-group-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0;
-        }
-
-        .link-group-index {
-            font-size: 11px;
-            font-weight: 800;
-            color: white;
-            background: var(--accent-primary);
-            width: 22px;
-            height: 22px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .link-group-url {
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            color: var(--text-muted);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex-grow: 1;
-        }
-
-        .link-group-count {
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-muted);
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            padding: 2px 8px;
-            border-radius: 12px;
-            flex-shrink: 0;
-        }
-
-        .link-group-chevron {
-            color: var(--text-muted);
+        #outputTextarea {
+            min-height: 200px;
+            max-height: 500px;
+            resize: vertical;
+            line-height: 1.8;
             font-size: 12px;
-            transition: transform 0.2s;
-            flex-shrink: 0;
-            margin-left: 6px;
-        }
-        .link-group.collapsed .link-group-chevron {
-            transform: rotate(-90deg);
-        }
-
-        .link-group-body {
-            max-height: 600px;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .link-group.collapsed .link-group-body {
-            max-height: 0;
-        }
-
-        .list-container {
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 5px;
-            background: var(--input-bg);
-        }
-        .list-container::-webkit-scrollbar { width: 6px; }
-        .list-container::-webkit-scrollbar-track { background: transparent; }
-        .list-container::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
-        .item { 
-            background: var(--bg-card); 
-            border: 1px solid var(--border); 
-            padding: 10px 12px; 
-            margin-bottom: 4px; 
-            border-radius: 6px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-family: 'Courier New', monospace; 
-            font-size: 12px; 
-            color: var(--text-main);
-            transition: all 0.15s;
-        }
-        .item:last-child { margin-bottom: 5px; }
-        .item:hover { transform: translateX(2px); border-color: var(--text-muted); }
-        
-        .copy-btn { 
-            background: var(--input-bg); 
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            padding: 4px 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 11px;
-            font-weight: 600;
-            flex-shrink: 0;
-        } 
-        .copy-btn:hover { background: var(--border); color: var(--text-main); }
-
-        .group-copy-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 3px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 700;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-        .group-copy-btn:hover {
-            background: var(--switch-bg-on);
-            color: white;
-            border-color: var(--switch-bg-on);
         }
 
         #toast {
@@ -681,8 +528,6 @@
             h2 { font-size: 1.4rem; }
             .fb-prefix-text { font-size: 0.55rem; }
             .fb-grid { grid-template-columns: repeat(2, 1fr); }
-            .link-group-header { padding: 8px 10px; }
-            .link-group-url { font-size: 10px; }
         }
     </style>
 </head>
@@ -701,7 +546,6 @@
         </button>
     </div>
 
-    <!-- Smartlink Input -->
     <div class="form-group">
         <label>Smartlink Asli</label>
         <textarea id="smartlinkInput" placeholder="https://smartlink1.com/?ref=user&#10;https://smartlink2.com/?ref=user&#10;https://smartlink3.com/?ref=user" oninput="updateSmartlinkCounter()"></textarea>
@@ -711,7 +555,6 @@
         </div>
     </div>
 
-    <!-- Landing Page Panel -->
     <div class="form-group">
         <div class="panel-section">
             <div class="panel-control-header">
@@ -747,7 +590,6 @@
         </div>
     </div>
 
-    <!-- Cloaking FB Panel -->
     <div class="form-group">
         <div class="panel-section">
             <div class="panel-control-header">
@@ -783,36 +625,32 @@
         </div>
     </div>
 
-    <!-- Pipeline Visual -->
     <div class="pipeline-visual" id="pipelineVisual">
         <div class="pipeline-label">Alur Generate</div>
         <div class="pipeline-steps" id="pipelineSteps"></div>
     </div>
 
-    <!-- Jumlah Link -->
     <div class="form-group">
         <label>Jumlah Link Total</label>
         <input type="number" id="count" value="10" min="1" oninput="updateDistributionHint()">
         <div class="distribution-hint" id="distributionHint">
-            <span class="dist-icon">📊</span>
+            <span>📊</span>
             <span id="distributionText"></span>
         </div>
     </div>
 
-    <!-- Buttons -->
     <div class="btn-group">
         <button class="btn-generate" onclick="generate()">🚀 Generate Link</button>
         <button class="btn-reset" onclick="resetForm()">🔄 Reset</button>
     </div>
 
-    <!-- Output -->
     <div id="outputBox" class="output-box">
         <div class="output-header">
             <span class="output-title">Hasil Generate</span>
             <button class="btn-copy-all" onclick="copyAll()">📋 Salin Semua</button>
         </div>
         <div class="output-info-badges" id="outputBadges"></div>
-        <div id="outputList"></div>
+        <textarea id="outputTextarea" readonly></textarea>
     </div>
 </div>
 
@@ -838,16 +676,12 @@
         document.getElementById('iconMoon').style.display = theme === 'dark' ? 'block' : 'none';
     }
 
-    /* ========== SMARTLINK COUNTER ========== */
+    /* ========== SMARTLINK ========== */
     function updateSmartlinkCounter() {
         const links = parseSmartlinks();
         const counter = document.getElementById('smartlinkCounter');
         counter.textContent = links.length + ' link';
-        if (links.length > 0) {
-            counter.classList.add('has-links');
-        } else {
-            counter.classList.remove('has-links');
-        }
+        counter.classList.toggle('has-links', links.length > 0);
         updateDistributionHint();
     }
 
@@ -857,7 +691,7 @@
         return raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
     }
 
-    /* ========== DISTRIBUSI HINT ========== */
+    /* ========== DISTRIBUSI ========== */
     function getDistribution(total, numSL) {
         const dist = new Array(numSL).fill(0);
         let remaining = total;
@@ -888,40 +722,26 @@
     /* ========== LANDING PAGE ========== */
     function toggleLP() {
         const isOn = document.getElementById('lpSwitch').checked;
-        const container = document.getElementById('lpContainer');
-        const statusText = document.getElementById('lpStatusText');
-        const dot = document.getElementById('lpDot');
-        if (isOn) {
-            container.classList.remove('panel-container-disabled');
-            statusText.innerText = "On (aktif)";
-            statusText.style.color = "#48bb78";
-            dot.classList.add('on');
-        } else {
-            container.classList.add('panel-container-disabled');
-            statusText.innerText = "Off (Direct)";
-            statusText.style.color = "#718096";
-            dot.classList.remove('on');
-        }
+        document.getElementById('lpContainer').classList.toggle('panel-container-disabled', !isOn);
+        document.getElementById('lpStatusText').innerText = isOn ? "On (aktif)" : "Off (Direct)";
+        document.getElementById('lpStatusText').style.color = isOn ? "#48bb78" : "#718096";
+        document.getElementById('lpDot').classList.toggle('on', isOn);
         updatePipeline();
     }
 
-    function toggleLPSelection(element) {
+    function toggleLPSelection(el) {
         if (!document.getElementById('lpSwitch').checked) return;
-        element.classList.toggle('selected');
-        const checkbox = element.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
+        el.classList.toggle('selected');
+        const cb = el.querySelector('input[type="checkbox"]');
+        cb.checked = !cb.checked;
     }
 
     function getSelectedLPs() {
-        const urls = [];
         const customUrl = document.getElementById('lpCustomInput').value.trim();
-        if (customUrl) {
-            urls.push(customUrl);
-            return urls;
-        }
-        const checked = document.querySelectorAll('.lp-checkbox:checked');
-        checked.forEach(box => {
-            urls.push(box.parentElement.getAttribute('data-url'));
+        if (customUrl) return [customUrl];
+        const urls = [];
+        document.querySelectorAll('.lp-checkbox:checked').forEach(cb => {
+            urls.push(cb.parentElement.getAttribute('data-url'));
         });
         return urls;
     }
@@ -934,26 +754,16 @@
     /* ========== CLOAKING FB ========== */
     function toggleFB() {
         const isOn = document.getElementById('fbSwitch').checked;
-        const container = document.getElementById('fbContainer');
-        const statusText = document.getElementById('fbStatusText');
-        const dot = document.getElementById('fbDot');
-        if (isOn) {
-            container.classList.remove('panel-container-disabled');
-            statusText.innerText = "On (aktif)";
-            statusText.style.color = "#48bb78";
-            dot.classList.add('on');
-        } else {
-            container.classList.add('panel-container-disabled');
-            statusText.innerText = "Off (Direct)";
-            statusText.style.color = "#718096";
-            dot.classList.remove('on');
-        }
+        document.getElementById('fbContainer').classList.toggle('panel-container-disabled', !isOn);
+        document.getElementById('fbStatusText').innerText = isOn ? "On (aktif)" : "Off (Direct)";
+        document.getElementById('fbStatusText').style.color = isOn ? "#48bb78" : "#718096";
+        document.getElementById('fbDot').classList.toggle('on', isOn);
         updatePipeline();
     }
 
     function selectFB(el) {
         if (!document.getElementById('fbSwitch').checked) return;
-        document.querySelectorAll('.fb-item').forEach(item => item.classList.remove('selected'));
+        document.querySelectorAll('.fb-item').forEach(i => i.classList.remove('selected'));
         el.classList.add('selected');
         const prefix = el.getAttribute('data-prefix');
         const customBox = document.getElementById('fbCustomBox');
@@ -969,9 +779,9 @@
 
     function getActiveFBPrefix() {
         if (!document.getElementById('fbSwitch').checked) return '';
-        const selected = document.querySelector('.fb-item.selected');
-        if (!selected) return '';
-        if (selected.getAttribute('data-prefix') === 'custom') {
+        const sel = document.querySelector('.fb-item.selected');
+        if (!sel) return '';
+        if (sel.getAttribute('data-prefix') === 'custom') {
             return document.getElementById('fbCustomInput').value.trim();
         }
         return selectedFBPrefix;
@@ -979,8 +789,7 @@
 
     function applyFB(url) {
         const prefix = getActiveFBPrefix();
-        if (!prefix) return url;
-        return prefix + encodeURIComponent(url);
+        return prefix ? prefix + encodeURIComponent(url) : url;
     }
 
     /* ========== PIPELINE ========== */
@@ -989,36 +798,20 @@
         const steps = document.getElementById('pipelineSteps');
         const lpOn = document.getElementById('lpSwitch').checked;
         const fbOn = document.getElementById('fbSwitch').checked;
-        if (!lpOn && !fbOn) {
-            container.classList.remove('show');
-            return;
-        }
+        if (!lpOn && !fbOn) { container.classList.remove('show'); return; }
         container.classList.add('show');
         let html = '<span class="pipeline-step step-smartlink">Smartlink</span>';
-        if (lpOn) {
-            html += '<span class="pipeline-arrow">→</span>';
-            html += '<span class="pipeline-step step-lp">Landing Page</span>';
-        }
-        if (fbOn) {
-            html += '<span class="pipeline-arrow">→</span>';
-            html += '<span class="pipeline-step step-fb">Cloaking FB</span>';
-        }
+        if (lpOn) html += '<span class="pipeline-arrow">→</span><span class="pipeline-step step-lp">Landing Page</span>';
+        if (fbOn) html += '<span class="pipeline-arrow">→</span><span class="pipeline-step step-fb">Cloaking FB</span>';
         steps.innerHTML = html;
     }
 
     /* ========== UTILS ========== */
-    function makeId(length) {
-        let result = '';
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    }
-
-    function truncateUrl(url, maxLen) {
-        if (url.length <= maxLen) return url;
-        return url.substring(0, maxLen - 3) + '...';
+    function makeId(len) {
+        const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let r = '';
+        for (let i = 0; i < len; i++) r += c.charAt(Math.floor(Math.random() * c.length));
+        return r;
     }
 
     /* ========== GENERATE ========== */
@@ -1029,11 +822,11 @@
         const fbOn = document.getElementById('fbSwitch').checked;
         const fbPrefix = getActiveFBPrefix();
 
-        const outputDiv = document.getElementById('outputList');
         const outputBox = document.getElementById('outputBox');
         const badgesDiv = document.getElementById('outputBadges');
+        const textarea = document.getElementById('outputTextarea');
 
-        outputDiv.innerHTML = '';
+        textarea.value = '';
         badgesDiv.innerHTML = '';
 
         if (smartlinks.length === 0) { showToast('Isi minimal satu Smartlink!'); return; }
@@ -1042,136 +835,59 @@
         if (fbOn && !fbPrefix) { showToast('Pilih atau isi prefix cloaking!'); return; }
 
         const lpList = lpOn ? getSelectedLPs() : [];
-        const numSL = smartlinks.length;
-
-        // Hitung distribusi: totalCount dibagi rata ke semua smartlink
-        const distribution = getDistribution(totalCount, numSL);
+        const distribution = getDistribution(totalCount, smartlinks.length);
+        const allLinks = [];
 
         smartlinks.forEach((smartlink, sIdx) => {
             const perSL = distribution[sIdx];
-            const groupLinks = [];
-
             for (let i = 0; i < perSL; i++) {
-                const randomCode = makeId(8);
+                const code = makeId(8);
                 const sep = smartlink.includes('?') ? '&' : '?';
-                let finalLink = smartlink + sep + randomCode;
-
+                let link = smartlink + sep + code;
                 if (lpOn && lpList.length > 0) {
-                    const randomLP = lpList[Math.floor(Math.random() * lpList.length)];
-                    finalLink = applyLP(finalLink, randomLP);
+                    link = applyLP(link, lpList[Math.floor(Math.random() * lpList.length)]);
                 }
-
-                if (fbOn && fbPrefix) {
-                    finalLink = applyFB(finalLink);
-                }
-
-                groupLinks.push(finalLink);
+                if (fbOn && fbPrefix) link = applyFB(link);
+                allLinks.push(link);
             }
-
-            // Buat group
-            const group = document.createElement('div');
-            group.className = 'link-group';
-            if (smartlinks.length > 1) {
-                group.innerHTML = `
-                    <div class="link-group-header" onclick="toggleGroup(this)">
-                        <div class="link-group-info">
-                            <span class="link-group-index">${sIdx + 1}</span>
-                            <span class="link-group-url" title="${smartlink}">${truncateUrl(smartlink, 60)}</span>
-                        </div>
-                        <button class="group-copy-btn" onclick="event.stopPropagation(); copyGroup(this)">Salin</button>
-                        <span class="link-group-count">${perSL} link</span>
-                        <span class="link-group-chevron">▼</span>
-                    </div>
-                    <div class="link-group-body">
-                        <div class="list-container"></div>
-                    </div>
-                `;
-            } else {
-                group.innerHTML = `<div class="list-container"></div>`;
-            }
-            outputDiv.appendChild(group);
-
-            const listContainer = group.querySelector('.list-container');
-            groupLinks.forEach(link => {
-                const safeLink = link.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-                const div = document.createElement('div');
-                div.className = 'item';
-                div.innerHTML = `
-                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:10px;" title="${safeLink}">${link}</span>
-                    <button class="copy-btn" onclick="copySingle(this, this.parentElement.querySelector('span').innerText)">Salin</button>
-                `;
-                listContainer.appendChild(div);
-            });
         });
 
-        // Info badges
+        textarea.value = allLinks.join('\n');
+
+        // Badges
         const slBadge = document.createElement('span');
         slBadge.className = 'info-badge total-badge';
         slBadge.textContent = '⚡ ' + smartlinks.length + ' smartlink';
         badgesDiv.appendChild(slBadge);
 
         if (lpOn) {
-            const badge = document.createElement('span');
-            badge.className = 'info-badge lp-badge';
-            badge.textContent = '🏠 ' + lpList.length + ' LP';
-            badgesDiv.appendChild(badge);
+            const b = document.createElement('span');
+            b.className = 'info-badge lp-badge';
+            b.textContent = '🏠 ' + lpList.length + ' LP';
+            badgesDiv.appendChild(b);
         }
         if (fbOn) {
-            const shortPrefix = fbPrefix.replace('https://', '').split('/')[0];
-            const badge = document.createElement('span');
-            badge.className = 'info-badge fb-badge';
-            badge.textContent = 'f ' + shortPrefix;
-            badgesDiv.appendChild(badge);
+            const b = document.createElement('span');
+            b.className = 'info-badge fb-badge';
+            b.textContent = 'f ' + fbPrefix.replace('https://', '').split('/')[0];
+            badgesDiv.appendChild(b);
         }
-
-        const totalBadge = document.createElement('span');
-        totalBadge.className = 'info-badge total-badge';
-        totalBadge.textContent = '🔗 ' + totalCount + ' total';
-        badgesDiv.appendChild(totalBadge);
+        const tBadge = document.createElement('span');
+        tBadge.className = 'info-badge total-badge';
+        tBadge.textContent = '🔗 ' + allLinks.length + ' total';
+        badgesDiv.appendChild(tBadge);
 
         outputBox.style.display = 'block';
         outputBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    /* ========== GROUP TOGGLE ========== */
-    function toggleGroup(header) {
-        const group = header.parentElement;
-        group.classList.toggle('collapsed');
-    }
-
     /* ========== COPY ========== */
-    function copySingle(btn, text) {
-        navigator.clipboard.writeText(text).then(() => {
-            const orig = btn.textContent;
-            btn.textContent = '✓';
-            btn.style.color = '#48bb78';
-            btn.style.borderColor = '#48bb78';
-            setTimeout(() => { btn.textContent = orig; btn.style.color = ''; btn.style.borderColor = ''; }, 1000);
-        });
-    }
-
-    function copyGroup(btn) {
-        const group = btn.closest('.link-group');
-        const items = group.querySelectorAll('.item span');
-        let allText = "";
-        items.forEach(item => { allText += item.innerText + "\n"; });
-        navigator.clipboard.writeText(allText).then(() => {
-            const orig = btn.textContent;
-            btn.textContent = '✓';
-            btn.style.background = '#48bb78';
-            btn.style.color = 'white';
-            btn.style.borderColor = '#48bb78';
-            setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; }, 1200);
-        });
-    }
-
     function copyAll() {
-        const items = document.querySelectorAll('.item span');
-        if (items.length === 0) return;
-        let allText = "";
-        items.forEach(item => { allText += item.innerText + "\n"; });
-        navigator.clipboard.writeText(allText).then(() => {
-            showToast('Semua ' + items.length + ' link tersalin!');
+        const textarea = document.getElementById('outputTextarea');
+        if (!textarea.value) return;
+        textarea.select();
+        navigator.clipboard.writeText(textarea.value).then(() => {
+            showToast('Semua ' + textarea.value.split('\n').length + ' link tersalin!');
         });
     }
 
@@ -1180,31 +896,27 @@
         document.getElementById('smartlinkInput').value = '';
         document.getElementById('count').value = '10';
         updateSmartlinkCounter();
-        updateDistributionHint();
 
-        // Reset LP
         document.getElementById('lpSwitch').checked = false;
         toggleLP();
         document.getElementById('lpCustomInput').value = '';
         document.getElementById('lpCustomBox').style.display = 'none';
-        document.querySelectorAll('.lp-item').forEach(item => {
-            item.classList.remove('selected');
-            item.querySelector('input[type="checkbox"]').checked = false;
+        document.querySelectorAll('.lp-item').forEach(i => {
+            i.classList.remove('selected');
+            i.querySelector('input[type="checkbox"]').checked = false;
         });
 
-        // Reset FB
         document.getElementById('fbSwitch').checked = false;
         toggleFB();
         document.getElementById('fbCustomInput').value = '';
         document.getElementById('fbCustomBox').style.display = 'none';
         selectedFBPrefix = 'https://web.facebook.com/l.php?u=';
-        document.querySelectorAll('.fb-item').forEach(item => item.classList.remove('selected'));
+        document.querySelectorAll('.fb-item').forEach(i => i.classList.remove('selected'));
         document.querySelector('.fb-item[data-prefix="https://web.facebook.com/l.php?u="]').classList.add('selected');
 
-        // Reset pipeline & output
         document.getElementById('pipelineVisual').classList.remove('show');
         document.getElementById('outputBox').style.display = 'none';
-        document.getElementById('outputList').innerHTML = '';
+        document.getElementById('outputTextarea').value = '';
         document.getElementById('outputBadges').innerHTML = '';
         document.getElementById('distributionHint').classList.remove('show');
 
@@ -1212,11 +924,11 @@
     }
 
     /* ========== TOAST ========== */
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        toast.innerText = message;
-        toast.className = 'show';
-        setTimeout(function() { toast.className = toast.className.replace('show', ''); }, 3000);
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.className = 'show';
+        setTimeout(() => { t.className = t.className.replace('show', ''); }, 3000);
     }
 
     window.addEventListener('DOMContentLoaded', initTheme);
