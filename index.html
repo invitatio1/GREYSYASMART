@@ -408,6 +408,22 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- DISTRIBUTION HINT --- */
+        .distribution-hint {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: var(--input-focus-ring);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 8px;
+            font-size: 11px;
+            color: var(--accent-primary);
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.2s ease;
+        }
+        .distribution-hint.show { display: flex; align-items: center; gap: 6px; }
+        .distribution-hint .dist-icon { font-size: 13px; }
+
         /* --- BUTTONS --- */
         .btn-group {
             display: grid;
@@ -775,8 +791,12 @@
 
     <!-- Jumlah Link -->
     <div class="form-group">
-        <label>Jumlah Link per Smartlink</label>
-        <input type="number" id="count" value="10" min="1">
+        <label>Jumlah Link Total</label>
+        <input type="number" id="count" value="10" min="1" oninput="updateDistributionHint()">
+        <div class="distribution-hint" id="distributionHint">
+            <span class="dist-icon">📊</span>
+            <span id="distributionText"></span>
+        </div>
     </div>
 
     <!-- Buttons -->
@@ -828,12 +848,41 @@
         } else {
             counter.classList.remove('has-links');
         }
+        updateDistributionHint();
     }
 
     function parseSmartlinks() {
         const raw = document.getElementById('smartlinkInput').value.trim();
         if (!raw) return [];
         return raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    }
+
+    /* ========== DISTRIBUSI HINT ========== */
+    function getDistribution(total, numSL) {
+        const dist = new Array(numSL).fill(0);
+        let remaining = total;
+        for (let i = 0; i < numSL && remaining > 0; i++) {
+            const give = Math.ceil(remaining / (numSL - i));
+            dist[i] = give;
+            remaining -= give;
+        }
+        return dist;
+    }
+
+    function updateDistributionHint() {
+        const hint = document.getElementById('distributionHint');
+        const text = document.getElementById('distributionText');
+        const numSL = parseSmartlinks().length;
+        const total = parseInt(document.getElementById('count').value) || 0;
+
+        if (numSL > 0 && total > 0) {
+            const dist = getDistribution(total, numSL);
+            const parts = dist.map((d, i) => 'SL' + (i + 1) + ': ' + d);
+            text.textContent = 'Dibagi: ' + parts.join(' | ') + ' = ' + dist.reduce((a, b) => a + b, 0) + ' total';
+            hint.classList.add('show');
+        } else {
+            hint.classList.remove('show');
+        }
     }
 
     /* ========== LANDING PAGE ========== */
@@ -975,7 +1024,7 @@
     /* ========== GENERATE ========== */
     function generate() {
         const smartlinks = parseSmartlinks();
-        const count = parseInt(document.getElementById('count').value);
+        const totalCount = parseInt(document.getElementById('count').value);
         const lpOn = document.getElementById('lpSwitch').checked;
         const fbOn = document.getElementById('fbSwitch').checked;
         const fbPrefix = getActiveFBPrefix();
@@ -988,16 +1037,21 @@
         badgesDiv.innerHTML = '';
 
         if (smartlinks.length === 0) { showToast('Isi minimal satu Smartlink!'); return; }
-        if (isNaN(count) || count < 1) { showToast('Jumlah link tidak valid!'); return; }
+        if (isNaN(totalCount) || totalCount < 1) { showToast('Jumlah link tidak valid!'); return; }
         if (lpOn && getSelectedLPs().length === 0) { showToast('Pilih minimal satu Landing Page!'); return; }
         if (fbOn && !fbPrefix) { showToast('Pilih atau isi prefix cloaking!'); return; }
 
         const lpList = lpOn ? getSelectedLPs() : [];
-        let totalLinks = 0;
+        const numSL = smartlinks.length;
+
+        // Hitung distribusi: totalCount dibagi rata ke semua smartlink
+        const distribution = getDistribution(totalCount, numSL);
 
         smartlinks.forEach((smartlink, sIdx) => {
+            const perSL = distribution[sIdx];
             const groupLinks = [];
-            for (let i = 0; i < count; i++) {
+
+            for (let i = 0; i < perSL; i++) {
                 const randomCode = makeId(8);
                 const sep = smartlink.includes('?') ? '&' : '?';
                 let finalLink = smartlink + sep + randomCode;
@@ -1012,7 +1066,6 @@
                 }
 
                 groupLinks.push(finalLink);
-                totalLinks++;
             }
 
             // Buat group
@@ -1026,7 +1079,7 @@
                             <span class="link-group-url" title="${smartlink}">${truncateUrl(smartlink, 60)}</span>
                         </div>
                         <button class="group-copy-btn" onclick="event.stopPropagation(); copyGroup(this)">Salin</button>
-                        <span class="link-group-count">${count} link</span>
+                        <span class="link-group-count">${perSL} link</span>
                         <span class="link-group-chevron">▼</span>
                     </div>
                     <div class="link-group-body">
@@ -1034,7 +1087,6 @@
                     </div>
                 `;
             } else {
-                // Satu smartlink, tampil langsung tanpa header
                 group.innerHTML = `<div class="list-container"></div>`;
             }
             outputDiv.appendChild(group);
@@ -1074,7 +1126,7 @@
 
         const totalBadge = document.createElement('span');
         totalBadge.className = 'info-badge total-badge';
-        totalBadge.textContent = '🔗 ' + totalLinks + ' total';
+        totalBadge.textContent = '🔗 ' + totalCount + ' total';
         badgesDiv.appendChild(totalBadge);
 
         outputBox.style.display = 'block';
@@ -1128,6 +1180,7 @@
         document.getElementById('smartlinkInput').value = '';
         document.getElementById('count').value = '10';
         updateSmartlinkCounter();
+        updateDistributionHint();
 
         // Reset LP
         document.getElementById('lpSwitch').checked = false;
@@ -1153,6 +1206,7 @@
         document.getElementById('outputBox').style.display = 'none';
         document.getElementById('outputList').innerHTML = '';
         document.getElementById('outputBadges').innerHTML = '';
+        document.getElementById('distributionHint').classList.remove('show');
 
         showToast('Form di-reset!');
     }
