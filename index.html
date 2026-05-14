@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Multi-LP</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♾️</text></svg>">
+    <title>Generator</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
     <style>
         :root {
             --bg-body: #f0f4f8;
@@ -23,15 +23,15 @@
             --btn-reset-bg: #cbd5e0;
             --btn-reset-text: #4a5568;
             --btn-reset-hover: #a0aec0;
-            --lp-selected-bg: #f0fff4;
-            --lp-selected-border: #48bb78;
-            --shadow-card: 0 10px 25px rgba(0,0,0,0.05);
-            --shadow-input: 0 0 0 3px var(--input-focus-ring);
             --fb-selected-bg: #e7f3ff;
             --fb-selected-border: #1877f2;
             --fb-blue: #1877f2;
             --fb-blue-bg: #e8f0fe;
             --fb-blue-border: #a8c7fa;
+            --caption-selected-bg: #fff5f5;
+            --caption-selected-border: #f56565;
+            --shadow-card: 0 10px 25px rgba(0,0,0,0.05);
+            --shadow-input: 0 0 0 3px var(--input-focus-ring);
             --group-header-bg: #f7fafc;
         }
 
@@ -49,14 +49,14 @@
             --btn-reset-bg: #334155;
             --btn-reset-text: #94a3b8;
             --btn-reset-hover: #475569;
-            --lp-selected-bg: rgba(72, 187, 120, 0.1);
-            --lp-selected-border: #48bb78;
             --shadow-card: 0 10px 25px rgba(0,0,0,0.4);
             --fb-selected-bg: rgba(24, 119, 242, 0.12);
             --fb-selected-border: #4d9aff;
             --fb-blue: #4d9aff;
             --fb-blue-bg: rgba(24, 119, 242, 0.1);
             --fb-blue-border: rgba(77, 154, 255, 0.3);
+            --caption-selected-bg: rgba(245, 101, 101, 0.1);
+            --caption-selected-border: #fc8181;
             --group-header-bg: rgba(247, 250, 252, 0.05);
         }
 
@@ -162,7 +162,18 @@
         }
         .smartlink-counter.has-links {
             color: var(--switch-bg-on);
-            background: var(--lp-selected-bg);
+            background: rgba(72, 187, 120, 0.1);
+        }
+
+        /* Layout Side-by-Side Container */
+        .side-by-side-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            .side-by-side-wrapper { grid-template-columns: 1fr; }
         }
 
         .panel-section {
@@ -235,17 +246,17 @@
             filter: grayscale(1);
         }
 
-        .lp-grid {
+        /* Caption Styles */
+        .caption-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3px;
+            grid-template-columns: 1fr;
+            gap: 5px;
             margin-bottom: 5px;
         }
-
-        .lp-item {
+        .caption-item {
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 4px;
+            padding: 8px;
             cursor: pointer;
             position: relative;
             transition: all 0.2s;
@@ -253,45 +264,44 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 40px;
         }
-        .lp-item:hover { border-color: var(--text-muted); }
-        .lp-item.selected {
-            border-color: var(--lp-selected-border);
-            background-color: var(--lp-selected-bg);
+        .caption-item:hover { border-color: var(--text-muted); }
+        .caption-item.selected {
+            border-color: var(--caption-selected-border);
+            background-color: var(--caption-selected-bg);
         }
-        .lp-name { 
-            font-weight: bold; 
-            font-size: 0.75rem; 
-            color: var(--text-main); 
-            flex-grow: 1; 
-            text-align: center;
+        .caption-text {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 10px;
+            flex-grow: 1;
         }
-        .lp-checkbox {
+        .caption-checkbox {
             width: 14px; height: 14px;
-            accent-color: var(--switch-bg-on);
+            accent-color: var(--caption-selected-border);
             cursor: pointer;
+            flex-shrink: 0;
         }
-
-        .lp-custom-input {
+        .caption-custom-input {
             display: none; 
             margin-top: 5px;
             padding: 5px;
-            background: rgba(251, 211, 141, 0.1);
-            border: 1px solid #fbd38d;
+            background: var(--caption-selected-bg);
+            border: 1px solid var(--caption-selected-border);
             border-radius: 6px;
         }
-        [data-theme="dark"] .lp-custom-input {
-            background: rgba(251, 211, 141, 0.05);
-        }
 
+        /* FB Styles */
         .fb-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 3px;
             margin-bottom: 5px;
         }
-
         .fb-item {
             border: 1px solid var(--border);
             border-radius: 6px;
@@ -303,26 +313,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 40px;
+            height: 35px;
         }
         .fb-item:hover { border-color: var(--text-muted); }
         .fb-item.selected {
             border-color: var(--fb-selected-border);
             background-color: var(--fb-selected-bg);
         }
-
         .fb-prefix-text {
             font-family: 'Courier New', monospace;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-weight: 700;
             color: var(--text-secondary);
             text-align: center;
-            line-height: 1.3;
+            line-height: 1.2;
             word-break: break-all;
             transition: color 0.2s;
         }
         .fb-item.selected .fb-prefix-text { color: var(--fb-blue); }
-
         .fb-custom-input {
             display: none; 
             margin-top: 5px;
@@ -332,80 +340,10 @@
             border-radius: 6px;
         }
 
-        .pipeline-visual {
-            display: none;
-            margin-bottom: 20px;
-            padding: 8px 12px;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            animation: slideIn 0.3s ease;
-        }
-        .pipeline-visual.show { display: block; }
-
-        .pipeline-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 6px;
-        }
-
-        .pipeline-steps {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        .pipeline-step {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 5px;
-            border: 1px solid;
-            white-space: nowrap;
-        }
-        .pipeline-step.step-smartlink {
-            background: rgba(102, 126, 234, 0.1);
-            color: var(--accent-primary);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-        .pipeline-step.step-lp {
-            background: var(--lp-selected-bg);
-            color: var(--lp-selected-border);
-            border-color: var(--lp-selected-border);
-        }
-        .pipeline-step.step-fb {
-            background: var(--fb-blue-bg);
-            color: var(--fb-blue);
-            border-color: var(--fb-blue-border);
-        }
-        .pipeline-arrow {
-            color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 700;
-        }
-
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-6px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .distribution-hint {
-            margin-top: 8px;
-            padding: 8px 12px;
-            background: var(--input-focus-ring);
-            border: 1px solid rgba(102, 126, 234, 0.2);
-            border-radius: 8px;
-            font-size: 11px;
-            color: var(--accent-primary);
-            font-weight: 600;
-            display: none;
-            animation: slideIn 0.2s ease;
-        }
-        .distribution-hint.show { display: flex; align-items: center; gap: 6px; }
 
         .btn-group {
             display: grid;
@@ -452,8 +390,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
         }
         .output-title { font-weight: bold; color: var(--text-main); font-size: 14px; }
 
@@ -467,41 +403,18 @@
         }
         .btn-copy-all:hover { background: #38a169; }
 
-        .output-info-badges {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-        .info-badge {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 20px;
-            border: 1px solid;
-        }
-        .info-badge.lp-badge {
-            background: var(--lp-selected-bg);
-            color: var(--lp-selected-border);
-            border-color: var(--lp-selected-border);
-        }
-        .info-badge.fb-badge {
-            background: var(--fb-blue-bg);
-            color: var(--fb-blue);
-            border-color: var(--fb-blue-border);
-        }
-        .info-badge.total-badge {
-            background: var(--input-focus-ring);
-            color: var(--accent-primary);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-
         #outputTextarea {
-            min-height: 200px;
-            max-height: 500px;
+            width: 100%;
+            height: 250px;
+            padding: 10px;
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-family: 'Courier New', monospace;
+            font-size: 11px; /* Font size kecil sesuai request */
+            line-height: 1.4;
             resize: vertical;
-            line-height: 1.8;
-            font-size: 12px;
         }
 
         #toast {
@@ -522,13 +435,6 @@
             transition: opacity 0.3s;
         }
         #toast.show { opacity: 1; bottom: 50px; }
-
-        @media (max-width: 500px) {
-            .card { padding: 20px; }
-            h2 { font-size: 1.4rem; }
-            .fb-prefix-text { font-size: 0.55rem; }
-            .fb-grid { grid-template-columns: repeat(2, 1fr); }
-        }
     </style>
 </head>
 <body>
@@ -548,95 +454,85 @@
 
     <div class="form-group">
         <label>Smartlink Asli</label>
-        <textarea id="smartlinkInput" placeholder="https://smartlink1.com/?ref=user&#10;https://smartlink2.com/?ref=user&#10;https://smartlink3.com/?ref=user" oninput="updateSmartlinkCounter()"></textarea>
+        <textarea id="smartlinkInput" placeholder="https://smartlink1.com/?ref=user&#10;https://smartlink2.com/?ref=user" oninput="updateSmartlinkCounter()"></textarea>
         <div class="input-hint">
             <span class="input-hint-text">Satu smartlink per baris</span>
             <span class="smartlink-counter" id="smartlinkCounter">0 link</span>
         </div>
     </div>
 
-    <div class="form-group">
-        <div class="panel-section">
-            <div class="panel-control-header">
-                <div class="panel-status-text">
-                    <span class="panel-status-dot" id="lpDot"></span>
-                    <span id="lpStatusText">Off (Direct)</span>
+    <!-- Side-by-Side Wrapper -->
+    <div class="side-by-side-wrapper">
+        
+        <!-- Caption Panel -->
+        <div class="form-group" style="margin-bottom: 0;">
+            <div class="panel-section">
+                <div class="panel-control-header">
+                    <div class="panel-status-text">
+                        <span class="panel-status-dot" id="captionDot"></span>
+                        <span id="captionStatusText">Off</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="captionSwitch" onchange="toggleCaption()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" id="lpSwitch" onchange="toggleLP()">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div id="lpContainer" class="panel-container-disabled">
-                <div class="lp-grid">
-                    <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp1/">
-                        <div class="lp-name">LP 1</div>
-                        <input type="checkbox" class="lp-checkbox">
+                <div id="captionContainer" class="panel-container-disabled">
+                    <div class="caption-grid">
+                        <div class="caption-item selected" onclick="toggleCaptionSelection(this)">
+                            <span class="caption-text">👙💋 𝘚𝘰𝘭𝘰 𝘢𝘥𝘶𝘭𝘵𝘰𝘴 ❤️ 🇺🇸 𝘗𝘰𝘳 𝘧𝘢𝘷𝘰𝘳 𝘷𝘦𝘢 𝘢𝘲𝘶í 👙📲👇</span>
+                            <input type="checkbox" class="caption-checkbox" checked>
+                        </div>
                     </div>
-                    <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp2/">
-                        <div class="lp-name">LP 2</div>
-                        <input type="checkbox" class="lp-checkbox">
+                    <div class="caption-custom-input" id="captionCustomBox">
+                        <label style="font-size:10px; margin-bottom:3px; color:var(--text-muted);">Custom Text:</label>
+                        <textarea id="captionCustomInput" style="padding:5px; border:1px solid var(--border); font-size:11px; min-height:80px;" placeholder="Baris teks 1&#10;Baris teks 2&#10;Baris teks 3"></textarea>
                     </div>
-                    <div class="lp-item" onclick="toggleLPSelection(this)" data-url="https://invitatio1.github.io/lp3/">
-                        <div class="lp-name">LP 3</div>
-                        <input type="checkbox" class="lp-checkbox">
-                    </div>
-                </div>
-                <div class="lp-custom-input" id="lpCustomBox">
-                    <label style="font-size:10px; margin-bottom:3px;">URL LP Custom:</label>
-                    <input type="text" id="lpCustomInput" placeholder="https://..." style="padding:5px; border:1px solid #e2e8f0; font-size:11px;">
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="panel-section">
-            <div class="panel-control-header">
-                <div class="panel-status-text">
-                    <span class="panel-status-dot" id="fbDot"></span>
-                    <span id="fbStatusText">Off (Direct)</span>
+        <!-- FB Cloaking Panel -->
+        <div class="form-group" style="margin-bottom: 0;">
+            <div class="panel-section">
+                <div class="panel-control-header">
+                    <div class="panel-status-text">
+                        <span class="panel-status-dot" id="fbDot"></span>
+                        <span id="fbStatusText">Off</span>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="fbSwitch" onchange="toggleFB()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" id="fbSwitch" onchange="toggleFB()">
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div id="fbContainer" class="panel-container-disabled">
-                <div class="fb-grid">
-                    <div class="fb-item selected" onclick="selectFB(this)" data-prefix="https://web.facebook.com/l.php?u=">
-                        <span class="fb-prefix-text">web.facebook.com/l.php?u=</span>
+                <div id="fbContainer" class="panel-container-disabled">
+                    <div class="fb-grid">
+                        <div class="fb-item selected" onclick="selectFB(this)" data-prefix="https://web.facebook.com/l.php?u=">
+                            <span class="fb-prefix-text">web.facebook.com</span>
+                        </div>
+                        <div class="fb-item" onclick="selectFB(this)" data-prefix="https://l.facebook.com/l.php?u=">
+                            <span class="fb-prefix-text">l.facebook.com</span>
+                        </div>
+                        <div class="fb-item" onclick="selectFB(this)" data-prefix="https://m.facebook.com/l.php?u=">
+                            <span class="fb-prefix-text">m.facebook.com</span>
+                        </div>
+                        <div class="fb-item" onclick="selectFB(this)" data-prefix="custom">
+                            <span class="fb-prefix-text">Custom...</span>
+                        </div>
                     </div>
-                    <div class="fb-item" onclick="selectFB(this)" data-prefix="https://l.facebook.com/l.php?u=">
-                        <span class="fb-prefix-text">l.facebook.com/l.php?u=</span>
+                    <div class="fb-custom-input" id="fbCustomBox">
+                        <label style="font-size:10px; margin-bottom:3px; color:var(--text-muted);">Custom Prefix:</label>
+                        <input type="text" id="fbCustomInput" placeholder="https://..." style="padding:5px; border:1px solid var(--border); font-size:11px; background:var(--input-bg); color:var(--text-main);">
                     </div>
-                    <div class="fb-item" onclick="selectFB(this)" data-prefix="https://m.facebook.com/l.php?u=">
-                        <span class="fb-prefix-text">m.facebook.com/l.php?u=</span>
-                    </div>
-                    <div class="fb-item" onclick="selectFB(this)" data-prefix="custom">
-                        <span class="fb-prefix-text">Custom prefix...</span>
-                    </div>
-                </div>
-                <div class="fb-custom-input" id="fbCustomBox">
-                    <label style="font-size:10px; margin-bottom:3px; color:var(--text-muted);">Prefix URL custom:</label>
-                    <input type="text" id="fbCustomInput" placeholder="https://domain.com/redirect?u=" style="padding:5px; border:1px solid var(--border); font-size:11px; background:var(--input-bg); color:var(--text-main);">
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="pipeline-visual" id="pipelineVisual">
-        <div class="pipeline-label">Alur Generate</div>
-        <div class="pipeline-steps" id="pipelineSteps"></div>
     </div>
 
     <div class="form-group">
         <label>Jumlah Link Total</label>
-        <input type="number" id="count" value="10" min="1" oninput="updateDistributionHint()">
-        <div class="distribution-hint" id="distributionHint">
-            <span>📊</span>
-            <span id="distributionText"></span>
-        </div>
+        <input type="number" id="count" value="10" min="1">
     </div>
 
     <div class="btn-group">
@@ -649,7 +545,6 @@
             <span class="output-title">Hasil Generate</span>
             <button class="btn-copy-all" onclick="copyAll()">📋 Salin Semua</button>
         </div>
-        <div class="output-info-badges" id="outputBadges"></div>
         <textarea id="outputTextarea" readonly></textarea>
     </div>
 </div>
@@ -682,7 +577,6 @@
         const counter = document.getElementById('smartlinkCounter');
         counter.textContent = links.length + ' link';
         counter.classList.toggle('has-links', links.length > 0);
-        updateDistributionHint();
     }
 
     function parseSmartlinks() {
@@ -703,62 +597,61 @@
         return dist;
     }
 
-    function updateDistributionHint() {
-        const hint = document.getElementById('distributionHint');
-        const text = document.getElementById('distributionText');
-        const numSL = parseSmartlinks().length;
-        const total = parseInt(document.getElementById('count').value) || 0;
-
-        if (numSL > 0 && total > 0) {
-            const dist = getDistribution(total, numSL);
-            const parts = dist.map((d, i) => 'SL' + (i + 1) + ': ' + d);
-            text.textContent = 'Dibagi: ' + parts.join(' | ') + ' = ' + dist.reduce((a, b) => a + b, 0) + ' total';
-            hint.classList.add('show');
-        } else {
-            hint.classList.remove('show');
-        }
+    /* ========== CAPTION ========== */
+    function toggleCaption() {
+        const isOn = document.getElementById('captionSwitch').checked;
+        document.getElementById('captionContainer').classList.toggle('panel-container-disabled', !isOn);
+        document.getElementById('captionStatusText').innerText = isOn ? "On" : "Off";
+        document.getElementById('captionStatusText').style.color = isOn ? "#f56565" : "#718096";
+        document.getElementById('captionDot').classList.toggle('on', isOn);
     }
 
-    /* ========== LANDING PAGE ========== */
-    function toggleLP() {
-        const isOn = document.getElementById('lpSwitch').checked;
-        document.getElementById('lpContainer').classList.toggle('panel-container-disabled', !isOn);
-        document.getElementById('lpStatusText').innerText = isOn ? "On (aktif)" : "Off (Direct)";
-        document.getElementById('lpStatusText').style.color = isOn ? "#48bb78" : "#718096";
-        document.getElementById('lpDot').classList.toggle('on', isOn);
-        updatePipeline();
-    }
-
-    function toggleLPSelection(el) {
-        if (!document.getElementById('lpSwitch').checked) return;
+    function toggleCaptionSelection(el) {
+        if (!document.getElementById('captionSwitch').checked) return;
         el.classList.toggle('selected');
         const cb = el.querySelector('input[type="checkbox"]');
         cb.checked = !cb.checked;
+        const customBox = document.getElementById('captionCustomBox');
+        if (el.textContent.includes("Custom") && cb.checked) {
+            customBox.style.display = 'block';
+             document.querySelectorAll('.caption-item').forEach(i => {
+                 if(!i.textContent.includes("Custom")) {
+                     i.classList.remove('selected');
+                     i.querySelector('input').checked = false;
+                 }
+             });
+        } else if (!el.textContent.includes("Custom") && cb.checked) {
+            customBox.style.display = 'none';
+             document.querySelectorAll('.caption-item').forEach(i => {
+                 if(i.textContent.includes("Custom")) {
+                     i.classList.remove('selected');
+                     i.querySelector('input').checked = false;
+                 }
+             });
+        }
     }
 
-    function getSelectedLPs() {
-        const customUrl = document.getElementById('lpCustomInput').value.trim();
-        if (customUrl) return [customUrl];
-        const urls = [];
-        document.querySelectorAll('.lp-checkbox:checked').forEach(cb => {
-            urls.push(cb.parentElement.getAttribute('data-url'));
-        });
-        return urls;
-    }
-
-    function applyLP(url, lpUrl) {
-        const sep = lpUrl.includes('?') ? '&' : '?';
-        return lpUrl + sep + 'dest=' + encodeURIComponent(url);
+    function getCaptionLines() {
+        if (!document.getElementById('captionSwitch').checked) return null;
+        const customBox = document.getElementById('captionCustomBox');
+        if (customBox.style.display === 'block') {
+            const text = document.getElementById('captionCustomInput').value.trim();
+            return text ? text.split('\n') : null;
+        }
+        return [
+            "👙💋 𝘚𝘰𝘭𝘰 𝘢𝘥𝘶𝘭𝘵𝘰𝘴 ❤️ 🇺🇸",
+            "𝘕𝘰 𝘱𝘶𝘦𝘥𝘰 𝘱𝘶𝘣𝘭𝘪𝘤𝘢𝘳 𝘧𝘰𝘵𝘰𝘴 𝘰 𝘷𝘪𝘥𝘦𝘰𝘴 𝘱𝘢𝘳𝘢 𝘢𝘥𝘶𝘭𝘵𝘰𝘴 𝘦𝘯 𝘍𝘢𝘤𝘦𝘣𝘰𝘰𝘬",
+            "𝘗𝘰𝘳 𝘧𝘢𝘷𝘰𝘳 𝘷𝘦𝘢 𝘢𝘲𝘶í 👙📲👇"
+        ];
     }
 
     /* ========== CLOAKING FB ========== */
     function toggleFB() {
         const isOn = document.getElementById('fbSwitch').checked;
         document.getElementById('fbContainer').classList.toggle('panel-container-disabled', !isOn);
-        document.getElementById('fbStatusText').innerText = isOn ? "On (aktif)" : "Off (Direct)";
+        document.getElementById('fbStatusText').innerText = isOn ? "On" : "Off";
         document.getElementById('fbStatusText').style.color = isOn ? "#48bb78" : "#718096";
         document.getElementById('fbDot').classList.toggle('on', isOn);
-        updatePipeline();
     }
 
     function selectFB(el) {
@@ -792,20 +685,6 @@
         return prefix ? prefix + encodeURIComponent(url) : url;
     }
 
-    /* ========== PIPELINE ========== */
-    function updatePipeline() {
-        const container = document.getElementById('pipelineVisual');
-        const steps = document.getElementById('pipelineSteps');
-        const lpOn = document.getElementById('lpSwitch').checked;
-        const fbOn = document.getElementById('fbSwitch').checked;
-        if (!lpOn && !fbOn) { container.classList.remove('show'); return; }
-        container.classList.add('show');
-        let html = '<span class="pipeline-step step-smartlink">Smartlink</span>';
-        if (lpOn) html += '<span class="pipeline-arrow">→</span><span class="pipeline-step step-lp">Landing Page</span>';
-        if (fbOn) html += '<span class="pipeline-arrow">→</span><span class="pipeline-step step-fb">Cloaking FB</span>';
-        steps.innerHTML = html;
-    }
-
     /* ========== UTILS ========== */
     function makeId(len) {
         const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -818,25 +697,23 @@
     function generate() {
         const smartlinks = parseSmartlinks();
         const totalCount = parseInt(document.getElementById('count').value);
-        const lpOn = document.getElementById('lpSwitch').checked;
+        const capOn = document.getElementById('captionSwitch').checked;
         const fbOn = document.getElementById('fbSwitch').checked;
         const fbPrefix = getActiveFBPrefix();
+        const captionLines = getCaptionLines();
 
         const outputBox = document.getElementById('outputBox');
-        const badgesDiv = document.getElementById('outputBadges');
         const textarea = document.getElementById('outputTextarea');
 
         textarea.value = '';
-        badgesDiv.innerHTML = '';
 
         if (smartlinks.length === 0) { showToast('Isi minimal satu Smartlink!'); return; }
         if (isNaN(totalCount) || totalCount < 1) { showToast('Jumlah link tidak valid!'); return; }
-        if (lpOn && getSelectedLPs().length === 0) { showToast('Pilih minimal satu Landing Page!'); return; }
+        if (capOn && !captionLines) { showToast('Pilih atau isi teks caption!'); return; }
         if (fbOn && !fbPrefix) { showToast('Pilih atau isi prefix cloaking!'); return; }
 
-        const lpList = lpOn ? getSelectedLPs() : [];
         const distribution = getDistribution(totalCount, smartlinks.length);
-        const allLinks = [];
+        const allLines = [];
 
         smartlinks.forEach((smartlink, sIdx) => {
             const perSL = distribution[sIdx];
@@ -844,39 +721,20 @@
                 const code = makeId(8);
                 const sep = smartlink.includes('?') ? '&' : '?';
                 let link = smartlink + sep + code;
-                if (lpOn && lpList.length > 0) {
-                    link = applyLP(link, lpList[Math.floor(Math.random() * lpList.length)]);
-                }
+                
                 if (fbOn && fbPrefix) link = applyFB(link);
-                allLinks.push(link);
+
+                if (capOn && captionLines) {
+                    captionLines.forEach(line => {
+                        allLines.push(line);
+                    });
+                }
+                
+                allLines.push(link);
             }
         });
 
-        textarea.value = allLinks.join('\n');
-
-        // Badges
-        const slBadge = document.createElement('span');
-        slBadge.className = 'info-badge total-badge';
-        slBadge.textContent = '⚡ ' + smartlinks.length + ' smartlink';
-        badgesDiv.appendChild(slBadge);
-
-        if (lpOn) {
-            const b = document.createElement('span');
-            b.className = 'info-badge lp-badge';
-            b.textContent = '🏠 ' + lpList.length + ' LP';
-            badgesDiv.appendChild(b);
-        }
-        if (fbOn) {
-            const b = document.createElement('span');
-            b.className = 'info-badge fb-badge';
-            b.textContent = 'f ' + fbPrefix.replace('https://', '').split('/')[0];
-            badgesDiv.appendChild(b);
-        }
-        const tBadge = document.createElement('span');
-        tBadge.className = 'info-badge total-badge';
-        tBadge.textContent = '🔗 ' + allLinks.length + ' total';
-        badgesDiv.appendChild(tBadge);
-
+        textarea.value = allLines.join('\n');
         outputBox.style.display = 'block';
         outputBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -887,7 +745,7 @@
         if (!textarea.value) return;
         textarea.select();
         navigator.clipboard.writeText(textarea.value).then(() => {
-            showToast('Semua ' + textarea.value.split('\n').length + ' link tersalin!');
+            showToast('Semua tersalin!');
         });
     }
 
@@ -897,14 +755,19 @@
         document.getElementById('count').value = '10';
         updateSmartlinkCounter();
 
-        document.getElementById('lpSwitch').checked = false;
-        toggleLP();
-        document.getElementById('lpCustomInput').value = '';
-        document.getElementById('lpCustomBox').style.display = 'none';
-        document.querySelectorAll('.lp-item').forEach(i => {
+        document.getElementById('captionSwitch').checked = false;
+        toggleCaption();
+        document.getElementById('captionCustomInput').value = '';
+        document.getElementById('captionCustomBox').style.display = 'none';
+        document.querySelectorAll('.caption-item').forEach(i => {
             i.classList.remove('selected');
-            i.querySelector('input[type="checkbox"]').checked = false;
+            i.querySelector('input').checked = false;
         });
+        const defaultCaption = document.querySelector('.caption-item');
+        if(defaultCaption) {
+            defaultCaption.classList.add('selected');
+            defaultCaption.querySelector('input').checked = true;
+        }
 
         document.getElementById('fbSwitch').checked = false;
         toggleFB();
@@ -914,11 +777,8 @@
         document.querySelectorAll('.fb-item').forEach(i => i.classList.remove('selected'));
         document.querySelector('.fb-item[data-prefix="https://web.facebook.com/l.php?u="]').classList.add('selected');
 
-        document.getElementById('pipelineVisual').classList.remove('show');
         document.getElementById('outputBox').style.display = 'none';
         document.getElementById('outputTextarea').value = '';
-        document.getElementById('outputBadges').innerHTML = '';
-        document.getElementById('distributionHint').classList.remove('show');
 
         showToast('Form di-reset!');
     }
